@@ -1,23 +1,23 @@
-# Reading D:/altera/13.0sp1/modelsim_ase/tcl/vsim/pref.tcl 
+# Reading P:/altera/13.0sp1/modelsim_ase/tcl/vsim/pref.tcl 
 # do al422_bam_bs_run_msim_rtl_verilog.do 
 # if {[file exists rtl_work]} {
 # 	vdel -lib rtl_work -all
 # }
 # vlib rtl_work
 # vmap work rtl_work
-# Copying D:\altera\13.0sp1\modelsim_ase\win32aloem/../modelsim.ini to modelsim.ini
+# Copying P:\altera\13.0sp1\modelsim_ase\win32aloem/../modelsim.ini to modelsim.ini
 # Modifying modelsim.ini
-# ** Warning: Copied D:\altera\13.0sp1\modelsim_ase\win32aloem/../modelsim.ini to modelsim.ini.
+# ** Warning: Copied P:\altera\13.0sp1\modelsim_ase\win32aloem/../modelsim.ini to modelsim.ini.
 #          Updated modelsim.ini.
 # 
-# vlog -vlog01compat -work work +incdir+D:/altera/al422-bam-bs {D:/altera/al422-bam-bs/al422_bam_bs.v}
+# vlog -vlog01compat -work work +incdir+P:/altera/al422-bam-bs {P:/altera/al422-bam-bs/al422_bam_bs.v}
 # Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
 # -- Compiling module al422_bam_bs
 # 
 # Top level modules:
 # 	al422_bam_bs
 # 
-# vlog -vlog01compat -work work +incdir+D:/altera/al422-bam-bs {D:/altera/al422-bam-bs/al422_bam_bs_tb.v}
+# vlog -vlog01compat -work work +incdir+P:/altera/al422-bam-bs {P:/altera/al422-bam-bs/al422_bam_bs_tb.v}
 # Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
 # -- Compiling module al422_bam_bs_vlg_tst
 # 
@@ -35,6 +35,54 @@
 # view signals
 # .main_pane.objects.interior.cs.body.tree
 # run -all
-# Break in Module al422_bam_bs_vlg_tst at D:/altera/al422-bam-bs/al422_bam_bs_tb.v line 64
-# Simulation Breakpoint: Break in Module al422_bam_bs_vlg_tst at D:/altera/al422-bam-bs/al422_bam_bs_tb.v line 64
+# Break in Module al422_bam_bs_vlg_tst at P:/altera/al422-bam-bs/al422_bam_bs_tb.v line 73
+# Simulation Breakpoint: Break in Module al422_bam_bs_vlg_tst at P:/altera/al422-bam-bs/al422_bam_bs_tb.v line 73
 # MACRO ./al422_bam_bs_run_msim_rtl_verilog.do PAUSED at line 17
+do wave.do
+# onerror {resume}
+# quietly WaveActivateNextPane {} 0
+# delete wave *
+# add wave -noupdate /al422_bam_bs_vlg_tst/in_clk
+# add wave -noupdate /al422_bam_bs_vlg_tst/in_nrst
+# add wave -noupdate /al422_bam_bs_vlg_tst/al422_nrst
+# add wave -noupdate /al422_bam_bs_vlg_tst/al422_re
+# add wave -noupdate -radix hexadecimal /al422_bam_bs_vlg_tst/address
+# add wave -noupdate -radix hexadecimal /al422_bam_bs_vlg_tst/memory_out
+# add wave -noupdate -radix hexadecimal /al422_bam_bs_vlg_tst/al422_bam_bs/phase_counter
+# add wave -noupdate -radix hexadecimal /al422_bam_bs_vlg_tst/al422_bam_bs/oe_counter
+# add wave -noupdate -radix hexadecimal /al422_bam_bs_vlg_tst/al422_bam_bs/oe_inactive_register
+# add wave -noupdate /al422_bam_bs_vlg_tst/al422_bam_bs/oe_phase_is_finished
+# add wave -noupdate /al422_bam_bs_vlg_tst/cntr_nrst
+# add wave -noupdate /al422_bam_bs_vlg_tst/al422_bam_bs/out_phases
+# add wave -noupdate /al422_bam_bs_vlg_tst/led_clk_out
+# add wave -noupdate /al422_bam_bs_vlg_tst/led_lat_out
+# add wave -noupdate /al422_bam_bs_vlg_tst/led_oe_out
+# add wave -noupdate -radix hexadecimal /al422_bam_bs_vlg_tst/led_row
+# add wave -noupdate -radix hexadecimal /al422_bam_bs_vlg_tst/al422_bam_bs/rgb_data
+# add wave -noupdate /al422_bam_bs_vlg_tst/al422_bam_bs/eol_fixed
+# add wave -noupdate /al422_bam_bs_vlg_tst/al422_bam_bs/load_phase_is_finished
+# add wave -noupdate /al422_bam_bs_vlg_tst/j
+# TreeUpdate [SetDefaultTree]
+# WaveRestoreCursors {{Cursor 1} {0 ps} 0}
+# quietly wave cursor active 1
+# configure wave -namecolwidth 150
+# configure wave -valuecolwidth 100
+# configure wave -justifyvalue left
+# configure wave -signalnamewidth 1
+# configure wave -snapdistance 10
+# configure wave -datasetprefix 0
+# configure wave -rowmargin 4
+# configure wave -childrowmargin 2
+# configure wave -gridoffset 0
+# configure wave -gridperiod 1
+# configure wave -griddelta 40
+# configure wave -timeline 0
+# configure wave -timelineunits ns
+# update
+# WaveRestoreZoom {0 ps} {348 ps}
+# restart -force
+# run 20000
+# wave cursor time -time 0 1
+# 0.00 ns
+# wave cursor configure 1 -name default
+# wave cursor see 1

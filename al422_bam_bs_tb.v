@@ -46,12 +46,21 @@ begin
 	memory[0] <= 8'b00101111; // oe inverted, row F
 	memory[1] <= 8'h03; // active low
 	memory[2] <= 8'h00; // active high
-	memory[6] <= 8'h05; // inactive low
-	memory[7] <= 8'h00; // inactive high
-	memory[8] <= 8'h3F;
-	memory[21] <= 8'h3F;
-	memory[22] <= 8'h3F;
-	memory[23] <= 8'h3F;
+	memory[3] <= 8'h05; // inactive low
+	memory[4] <= 8'h00; // inactive high
+	memory[5] <= 8'h31;
+	memory[6] <= 8'h32;
+	memory[7] <= 8'h33;
+	memory[8] <= 8'h74;
+	memory[9] <= 8'b00101110; // oe inverted, row E
+	memory[10] <= 8'h05; // active low
+	memory[11] <= 8'h00; // active high
+	memory[12] <= 8'h03; // inactive low
+	memory[13] <= 8'h00; // inactive high
+	memory[14] <= 8'h34;
+	memory[15] <= 8'h33;
+	memory[16] <= 8'h32;
+	memory[17] <= 8'hF1;
 	
 	memory[27] <= 8'h02;
 	memory[28] <= 8'h02;

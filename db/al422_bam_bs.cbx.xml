@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <LOG_ROOT>
 	<PROJECT NAME="al422_bam_bs">
-		<CBX_INST_ENTRY INSTANCE_NAME="|al422_bam_bs|lpm_add_sub:Add0" CBX_FILE_NAME="add_sub_qdh.tdf"/>
+		<CBX_INST_ENTRY INSTANCE_NAME="|al422_bam_bs|lpm_add_sub:Add1" CBX_FILE_NAME="add_sub_qdh.tdf"/>
 	</PROJECT>
 </LOG_ROOT>

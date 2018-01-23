@@ -19,6 +19,9 @@ module al422_bam_bs (
 	output wire [2:0] rgb1, rgb2
 );
 
+	reg al422_nrst;
+	assign al422_nrst_out = in_nrst & al422_nrst;
+	
 	reg led_oe, led_lat, led_clk;
 	reg [2:0] out_phases;
 	
@@ -38,24 +41,25 @@ module al422_bam_bs (
 	
 	reg [2:0] phase_counter;
 	
+	reg oe_phase_is_finished;
+	reg load_phase_is_finished;
+	wire next_row_start = oe_phase_is_finished & load_phase_is_finished;
+	
+	always @(posedge in_clk or negedge in_nrst)
+		if (~in_nrst)
+			led_lat <= 1'b0;
+		else
+			led_lat <= (phase_counter == 3'h1);
+			
 	always @(posedge in_clk or negedge in_nrst)
 		if (~in_nrst)
 			phase_counter <= 3'b0;
 		else
-			case (phase_counter)
-				3'h0: phase_counter <= 3'h1;
-				3'h1: phase_counter <= 3'h2;
-				3'h2: phase_counter <= 3'h3;
-				3'h3: phase_counter <= 3'h4;
-				3'h4: phase_counter <= 3'h5;
-				3'h5: if (oe_counter_is_zero)
-					phase_counter <= 3'h6;
-				3'h6: if (oe_counter_is_zero)
-					phase_counter <= 3'h7;
-			endcase
-			//if ((phase_counter < 3'h5) | ((phase_counter == 3'h5) & oe_active_is_zero) | ((phase_counter == 3'h6) & oe_inactive_is_zero))
-//			if ((phase_counter < 3'h5) | ((phase_counter == 3'h5) & oe_active_is_zero))
-//				phase_counter <= phase_counter + 1'b1;
+			if (next_row_start) 
+				phase_counter <= 3'b0;
+			else
+				if (phase_counter !=3'h5)
+					phase_counter <= phase_counter + 1'b1;
 
 	always @(posedge in_clk or negedge in_nrst)
 		if (~in_nrst)
@@ -66,44 +70,116 @@ module al422_bam_bs (
 	
 	always @(posedge in_clk or negedge in_nrst)
 		if (~in_nrst)
-			out_phases <= 3'b0;
+			out_phases <= 3'b001;
 		else
 			if (phase_counter == 3'h0)
 				out_phases <= in_data[7:5];
 	
 	wire oe_counter_is_zero;
 	assign oe_counter_is_zero = (oe_counter == 16'h0);
-	
+
+	always @(posedge in_clk or negedge in_nrst)
+		if (~in_nrst)
+			oe_phase_is_finished <= 1'b0;
+		else
+			if (next_row_start) 
+				oe_phase_is_finished <= 1'b0;
+			else
+				if ((phase_counter == 3'h5) & oe_counter_is_zero & !led_oe)
+					oe_phase_is_finished <= 1'b1;
+		
 	always @(posedge in_clk or negedge in_nrst)
 		if (~in_nrst)
 			oe_counter <= 16'h0;
 		else
-		begin
-			if (phase_counter == 3'h1)
-				oe_counter[7:0] <= in_data;
-			if (phase_counter == 3'h2)
-				oe_counter[15:8] <= in_data;
-			if ((phase_counter == 3'h5) | (phase_counter == 3'h6))
+			case (phase_counter)
+				3'h1: oe_counter[7:0] <= in_data;
+				3'h2: oe_counter[15:8] <= in_data;
+				3'h5: 
+					if (oe_counter_is_zero)
+						oe_counter <= oe_inactive_register;
+					else
+						oe_counter <= oe_counter - 1'b1;
+			endcase
+
+	always @(posedge in_clk or negedge in_nrst)
+		if (~in_nrst)
+			led_oe <= 1'b0;
+		else
+			if (phase_counter == 3'h4)
+				led_oe <= 1'b1;
+			else
 				if (oe_counter_is_zero)
-					oe_counter <= oe_inactive_register;
-				else
-					oe_counter <= oe_counter - 1'b1;
-		end
+					led_oe <= 1'b0;
 			
 	always @(posedge in_clk or negedge in_nrst)
 		if (~in_nrst)
 			oe_inactive_register <= 16'h0;
 		else
-		begin
-			if (phase_counter == 3'h3)
-				oe_inactive_register[7:0] <= in_data;
-			if (phase_counter == 3'h4)
-				oe_inactive_register[15:8] <= in_data;
-		end
+			case (phase_counter)
+				3'h3: oe_inactive_register[7:0] <= in_data;
+				3'h4: oe_inactive_register[15:8] <= in_data;
+			endcase
 			
+			
+	reg data_phase;
+	reg eol_fixed;
+	
+	assign al422_re_out = data_phase | eol_fixed;
+	always @(posedge in_clk or negedge in_nrst)
+		if (~in_nrst)
+			data_phase <= 1'b0;
+		else
+			if (next_row_start) 
+				data_phase <= 1'b0;
+			else
+				if (phase_counter == 3'h5)
+					data_phase <= ~data_phase;
+	
 	always @(posedge in_clk or negedge in_nrst)
 		if (~in_nrst)
 			rgb_data <= 6'h0;
 		else
-			rgb_data <= in_data;
+			if ((phase_counter == 3'h5) & !data_phase)
+				rgb_data <= in_data[5:0];
+
+	always @(posedge in_clk or negedge in_nrst)
+		if (~in_nrst)
+			led_clk <= 1'b0;
+		else
+			if (next_row_start) 
+				led_clk <= 1'b0;
+			else
+				led_clk <= data_phase | eol_fixed;
+			
+	always @(posedge in_clk or negedge in_nrst)
+		if (~in_nrst)
+			eol_fixed <= 1'b0;
+		else
+			if (next_row_start) 
+				eol_fixed <= 1'b0;
+			else
+				if ((phase_counter == 3'h5) & !data_phase & in_data[6])
+					eol_fixed <= 1'b1;
+
+	always @(posedge in_clk or negedge in_nrst)
+		if (~in_nrst)
+			al422_nrst <= 1'b1;
+		else
+			if (next_row_start) 
+				al422_nrst <= 1'b1;
+			else
+				if ((phase_counter == 3'h5) & data_phase & in_data[7])
+					al422_nrst <= 1'b0;
+
+	always @(posedge in_clk or negedge in_nrst)
+		if (~in_nrst)
+			load_phase_is_finished <= 1'b0;
+		else
+			if (next_row_start) 
+				load_phase_is_finished <= 1'b0;
+			else
+				if (eol_fixed & !data_phase)
+					load_phase_is_finished <= 1'b1;
+	
 endmodule

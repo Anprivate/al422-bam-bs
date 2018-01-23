@@ -1,9 +1,6 @@
 library verilog;
 use verilog.vl_types.all;
 entity al422_bam_bs is
-    generic(
-        BIT_COUNTER_WIDTH: integer := 3
-    );
     port(
         in_clk          : in     vl_logic;
         in_nrst         : in     vl_logic;
@@ -17,6 +14,4 @@ entity al422_bam_bs is
         rgb1            : out    vl_logic_vector(2 downto 0);
         rgb2            : out    vl_logic_vector(2 downto 0)
     );
-    attribute mti_svvh_generic_type : integer;
-    attribute mti_svvh_generic_type of BIT_COUNTER_WIDTH : constant is 1;
 end al422_bam_bs;
