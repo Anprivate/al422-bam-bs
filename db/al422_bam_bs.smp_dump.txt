@@ -1,0 +1,11 @@
+
+State Machine - |al422_bam_bs|phase_counter
+Name phase_counter.state_bit_2 phase_counter.state_bit_1 phase_counter.state_bit_0 
+phase_counter.000 0 0 0 
+phase_counter.001 1 0 0 
+phase_counter.010 0 0 1 
+phase_counter.011 1 0 1 
+phase_counter.100 0 1 0 
+phase_counter.101 1 1 0 
+phase_counter.110 1 1 1 
+phase_counter.111 0 1 1 

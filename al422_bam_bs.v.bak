@@ -1,0 +1,21 @@
+module al422_bam (
+	input wire in_clk, in_nrst,
+	// al422 pins
+	input wire [7:0] in_data,
+	output wire al422_nrst_out, al422_re_out,
+	// led outpur pins HUB75E
+	output wire led_clk_out, led_oe_out, led_lat_out,
+	// up to 1/32 scan
+	output wire [4:0] led_row,
+	// up to 2 RGB outputs
+	output wire [2:0] rgb1, rgb2
+);
+
+	wire led_oe;
+	wire led_lat;
+	wire led_clk;
+	
+	parameter BIT_COUNTER_WIDTH = 3;
+	reg [BIT_COUNTER_WIDTH - 1:0] bit_counter;
+	
+endmodule

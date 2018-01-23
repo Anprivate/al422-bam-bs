@@ -1,0 +1,299 @@
+Analysis & Synthesis report for al422_bam_bs
+Mon Jan 22 17:10:49 2018
+Quartus II 64-Bit Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Analysis & Synthesis Summary
+  3. Analysis & Synthesis Settings
+  4. Parallel Compilation
+  5. Analysis & Synthesis Source Files Read
+  6. Analysis & Synthesis Resource Usage Summary
+  7. Analysis & Synthesis Resource Utilization by Entity
+  8. State Machine - |al422_bam_bs|phase_counter
+  9. Registers Removed During Synthesis
+ 10. Parameter Settings for Inferred Entity Instance: lpm_add_sub:Add0
+ 11. Analysis & Synthesis Messages
+ 12. Analysis & Synthesis Suppressed Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 1991-2013 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+
+
+
++-------------------------------------------------------------------------------+
+; Analysis & Synthesis Summary                                                  ;
++-----------------------------+-------------------------------------------------+
+; Analysis & Synthesis Status ; Successful - Mon Jan 22 17:10:48 2018           ;
+; Quartus II 64-Bit Version   ; 13.0.1 Build 232 06/12/2013 SP 1 SJ Web Edition ;
+; Revision Name               ; al422_bam_bs                                    ;
+; Top-level Entity Name       ; al422_bam_bs                                    ;
+; Family                      ; MAX3000A                                        ;
+; Total macrocells            ; 51                                              ;
+; Total pins                  ; 26                                              ;
++-----------------------------+-------------------------------------------------+
+
+
++--------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Settings                                                                                ;
++----------------------------------------------------------------------------+-----------------+---------------+
+; Option                                                                     ; Setting         ; Default Value ;
++----------------------------------------------------------------------------+-----------------+---------------+
+; Device                                                                     ; EPM3064ATC44-10 ;               ;
+; Top-level entity name                                                      ; al422_bam_bs    ; al422_bam_bs  ;
+; Family name                                                                ; MAX3000A        ; Cyclone IV GX ;
+; Use smart compilation                                                      ; Off             ; Off           ;
+; Enable parallel Assembler and TimeQuest Timing Analyzer during compilation ; On              ; On            ;
+; Enable compact report table                                                ; Off             ; Off           ;
+; Create Debugging Nodes for IP Cores                                        ; Off             ; Off           ;
+; Preserve fewer node names                                                  ; On              ; On            ;
+; Disable OpenCore Plus hardware evaluation                                  ; Off             ; Off           ;
+; Verilog Version                                                            ; Verilog_2001    ; Verilog_2001  ;
+; VHDL Version                                                               ; VHDL_1993       ; VHDL_1993     ;
+; State Machine Processing                                                   ; Auto            ; Auto          ;
+; Safe State Machine                                                         ; Off             ; Off           ;
+; Extract Verilog State Machines                                             ; On              ; On            ;
+; Extract VHDL State Machines                                                ; On              ; On            ;
+; Ignore Verilog initial constructs                                          ; Off             ; Off           ;
+; Iteration limit for constant Verilog loops                                 ; 5000            ; 5000          ;
+; Iteration limit for non-constant Verilog loops                             ; 250             ; 250           ;
+; Add Pass-Through Logic to Inferred RAMs                                    ; On              ; On            ;
+; Infer RAMs from Raw Logic                                                  ; On              ; On            ;
+; Parallel Synthesis                                                         ; On              ; On            ;
+; NOT Gate Push-Back                                                         ; On              ; On            ;
+; Power-Up Don't Care                                                        ; On              ; On            ;
+; Remove Duplicate Registers                                                 ; On              ; On            ;
+; Ignore CARRY Buffers                                                       ; Off             ; Off           ;
+; Ignore CASCADE Buffers                                                     ; Off             ; Off           ;
+; Ignore GLOBAL Buffers                                                      ; Off             ; Off           ;
+; Ignore ROW GLOBAL Buffers                                                  ; Off             ; Off           ;
+; Ignore LCELL Buffers                                                       ; Auto            ; Auto          ;
+; Ignore SOFT Buffers                                                        ; Off             ; Off           ;
+; Limit AHDL Integers to 32 Bits                                             ; Off             ; Off           ;
+; Optimization Technique                                                     ; Speed           ; Speed         ;
+; Allow XOR Gate Usage                                                       ; On              ; On            ;
+; Auto Logic Cell Insertion                                                  ; On              ; On            ;
+; Parallel Expander Chain Length                                             ; 4               ; 4             ;
+; Auto Parallel Expanders                                                    ; On              ; On            ;
+; Auto Open-Drain Pins                                                       ; On              ; On            ;
+; Auto Resource Sharing                                                      ; Off             ; Off           ;
+; Maximum Fan-in Per Macrocell                                               ; 100             ; 100           ;
+; Use LogicLock Constraints during Resource Balancing                        ; On              ; On            ;
+; Ignore translate_off and synthesis_off directives                          ; Off             ; Off           ;
+; Report Parameter Settings                                                  ; On              ; On            ;
+; Report Source Assignments                                                  ; On              ; On            ;
+; Report Connectivity Checks                                                 ; On              ; On            ;
+; HDL message level                                                          ; Level2          ; Level2        ;
+; Suppress Register Optimization Related Messages                            ; Off             ; Off           ;
+; Number of Removed Registers Reported in Synthesis Report                   ; 5000            ; 5000          ;
+; Number of Swept Nodes Reported in Synthesis Report                         ; 5000            ; 5000          ;
+; Number of Inverted Registers Reported in Synthesis Report                  ; 100             ; 100           ;
+; Block Design Naming                                                        ; Auto            ; Auto          ;
+; Synthesis Effort                                                           ; Auto            ; Auto          ;
+; Shift Register Replacement - Allow Asynchronous Clear Signal               ; On              ; On            ;
+; Pre-Mapping Resynthesis Optimization                                       ; Off             ; Off           ;
+; Analysis & Synthesis Message Level                                         ; Medium          ; Medium        ;
+; Disable Register Merging Across Hierarchies                                ; Auto            ; Auto          ;
+; Synthesis Seed                                                             ; 1               ; 1             ;
++----------------------------------------------------------------------------+-----------------+---------------+
+
+
+Parallel compilation was disabled, but you have multiple processors available. Enable parallel compilation to reduce compilation time.
++-------------------------------------+
+; Parallel Compilation                ;
++----------------------------+--------+
+; Processors                 ; Number ;
++----------------------------+--------+
+; Number detected on machine ; 8      ;
+; Maximum allowed            ; 1      ;
++----------------------------+--------+
+
+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                            ;
++----------------------------------+-----------------+------------------------+---------------------------------------------------------------------------+---------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type              ; File Name with Absolute Path                                              ; Library ;
++----------------------------------+-----------------+------------------------+---------------------------------------------------------------------------+---------+
+; al422_bam_bs.v                   ; yes             ; User Verilog HDL File  ; D:/altera/al422-bam-bs/al422_bam_bs.v                                     ;         ;
+; lpm_add_sub.tdf                  ; yes             ; Megafunction           ; d:/altera/13.0sp1/quartus/libraries/megafunctions/lpm_add_sub.tdf         ;         ;
+; addcore.inc                      ; yes             ; Megafunction           ; d:/altera/13.0sp1/quartus/libraries/megafunctions/addcore.inc             ;         ;
+; look_add.inc                     ; yes             ; Megafunction           ; d:/altera/13.0sp1/quartus/libraries/megafunctions/look_add.inc            ;         ;
+; bypassff.inc                     ; yes             ; Megafunction           ; d:/altera/13.0sp1/quartus/libraries/megafunctions/bypassff.inc            ;         ;
+; altshift.inc                     ; yes             ; Megafunction           ; d:/altera/13.0sp1/quartus/libraries/megafunctions/altshift.inc            ;         ;
+; alt_stratix_add_sub.inc          ; yes             ; Megafunction           ; d:/altera/13.0sp1/quartus/libraries/megafunctions/alt_stratix_add_sub.inc ;         ;
+; aglobal130.inc                   ; yes             ; Megafunction           ; d:/altera/13.0sp1/quartus/libraries/megafunctions/aglobal130.inc          ;         ;
+; addcore.tdf                      ; yes             ; Megafunction           ; d:/altera/13.0sp1/quartus/libraries/megafunctions/addcore.tdf             ;         ;
+; a_csnbuffer.inc                  ; yes             ; Megafunction           ; d:/altera/13.0sp1/quartus/libraries/megafunctions/a_csnbuffer.inc         ;         ;
+; a_csnbuffer.tdf                  ; yes             ; Megafunction           ; d:/altera/13.0sp1/quartus/libraries/megafunctions/a_csnbuffer.tdf         ;         ;
+; look_add.tdf                     ; yes             ; Megafunction           ; d:/altera/13.0sp1/quartus/libraries/megafunctions/look_add.tdf            ;         ;
+; altshift.tdf                     ; yes             ; Megafunction           ; d:/altera/13.0sp1/quartus/libraries/megafunctions/altshift.tdf            ;         ;
++----------------------------------+-----------------+------------------------+---------------------------------------------------------------------------+---------+
+
+
++---------------------------------------------+
+; Analysis & Synthesis Resource Usage Summary ;
++----------------------+----------------------+
+; Resource             ; Usage                ;
++----------------------+----------------------+
+; Logic cells          ; 51                   ;
+; Total registers      ; 49                   ;
+; I/O pins             ; 26                   ;
+; Shareable expanders  ; 14                   ;
+; Maximum fan-out node ; in_clk               ;
+; Maximum fan-out      ; 49                   ;
+; Total fan-out        ; 776                  ;
+; Average fan-out      ; 8.53                 ;
++----------------------+----------------------+
+
+
++-------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                 ;
++----------------------------+------------+------+---------------------+--------------+
+; Compilation Hierarchy Node ; Macrocells ; Pins ; Full Hierarchy Name ; Library Name ;
++----------------------------+------------+------+---------------------+--------------+
+; |al422_bam_bs              ; 51         ; 26   ; |al422_bam_bs       ; work         ;
++----------------------------+------------+------+---------------------+--------------+
+
+
+Encoding Type:  Minimal Bits
++-------------------------------------------------------------------------------------------------------+
+; State Machine - |al422_bam_bs|phase_counter                                                           ;
++-------------------+---------------------------+---------------------------+---------------------------+
+; Name              ; phase_counter.state_bit_2 ; phase_counter.state_bit_1 ; phase_counter.state_bit_0 ;
++-------------------+---------------------------+---------------------------+---------------------------+
+; phase_counter.000 ; 0                         ; 0                         ; 0                         ;
+; phase_counter.001 ; 1                         ; 0                         ; 0                         ;
+; phase_counter.010 ; 0                         ; 0                         ; 1                         ;
+; phase_counter.011 ; 1                         ; 0                         ; 1                         ;
+; phase_counter.100 ; 0                         ; 1                         ; 0                         ;
+; phase_counter.101 ; 1                         ; 1                         ; 0                         ;
+; phase_counter.110 ; 1                         ; 1                         ; 1                         ;
+; phase_counter.111 ; 0                         ; 1                         ; 1                         ;
++-------------------+---------------------------+---------------------------+---------------------------+
+
+
++------------------------------------------------------------+
+; Registers Removed During Synthesis                         ;
++---------------------------------------+--------------------+
+; Register name                         ; Reason for Removal ;
++---------------------------------------+--------------------+
+; phase_counter~0                       ; Lost fanout        ;
+; Total Number of Removed Registers = 1 ;                    ;
++---------------------------------------+--------------------+
+
+
++-------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: lpm_add_sub:Add0 ;
++------------------------+-------------+----------------------------+
+; Parameter Name         ; Value       ; Type                       ;
++------------------------+-------------+----------------------------+
+; LPM_WIDTH              ; 16          ; Untyped                    ;
+; LPM_REPRESENTATION     ; UNSIGNED    ; Untyped                    ;
+; LPM_DIRECTION          ; ADD         ; Untyped                    ;
+; ONE_INPUT_IS_CONSTANT  ; YES         ; Untyped                    ;
+; LPM_PIPELINE           ; 0           ; Untyped                    ;
+; MAXIMIZE_SPEED         ; 5           ; Untyped                    ;
+; REGISTERED_AT_END      ; 0           ; Untyped                    ;
+; OPTIMIZE_FOR_SPEED     ; 5           ; Untyped                    ;
+; USE_CS_BUFFERS         ; 1           ; Untyped                    ;
+; CARRY_CHAIN            ; MANUAL      ; Untyped                    ;
+; CARRY_CHAIN_LENGTH     ; 48          ; CARRY_CHAIN_LENGTH         ;
+; DEVICE_FAMILY          ; MAX3000A    ; Untyped                    ;
+; USE_WYS                ; OFF         ; Untyped                    ;
+; STYLE                  ; FAST        ; Untyped                    ;
+; CBXI_PARAMETER         ; add_sub_qdh ; Untyped                    ;
+; AUTO_CARRY_CHAINS      ; ON          ; AUTO_CARRY                 ;
+; IGNORE_CARRY_BUFFERS   ; OFF         ; IGNORE_CARRY               ;
+; AUTO_CASCADE_CHAINS    ; ON          ; AUTO_CASCADE               ;
+; IGNORE_CASCADE_BUFFERS ; OFF         ; IGNORE_CASCADE             ;
++------------------------+-------------+----------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------+
+; Analysis & Synthesis Messages ;
++-------------------------------+
+Info: *******************************************************************
+Info: Running Quartus II 64-Bit Analysis & Synthesis
+    Info: Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
+    Info: Processing started: Mon Jan 22 17:10:43 2018
+Info: Command: quartus_map --read_settings_files=on --write_settings_files=off al422_bam_bs -c al422_bam_bs
+Info (12021): Found 1 design units, including 1 entities, in source file al422_bam_bs_tb.v
+    Info (12023): Found entity 1: al422_bam_bs_vlg_tst
+Info (12021): Found 1 design units, including 1 entities, in source file al422_bam_bs.v
+    Info (12023): Found entity 1: al422_bam_bs
+Info (12127): Elaborating entity "al422_bam_bs" for the top level hierarchy
+Warning (10858): Verilog HDL warning at al422_bam_bs.v(22): object led_oe used but never assigned
+Warning (10858): Verilog HDL warning at al422_bam_bs.v(22): object led_lat used but never assigned
+Warning (10858): Verilog HDL warning at al422_bam_bs.v(22): object led_clk used but never assigned
+Info (10264): Verilog HDL Case Statement information at al422_bam_bs.v(45): all case item expressions in this case statement are onehot
+Warning (10230): Verilog HDL assignment warning at al422_bam_bs.v(108): truncated value with size 8 to match size of target (6)
+Warning (10030): Net "led_oe" at al422_bam_bs.v(22) has no driver or initial value, using a default initial value '0'
+Warning (10030): Net "led_lat" at al422_bam_bs.v(22) has no driver or initial value, using a default initial value '0'
+Warning (10030): Net "led_clk" at al422_bam_bs.v(22) has no driver or initial value, using a default initial value '0'
+Warning (10034): Output port "al422_nrst_out" at al422_bam_bs.v(13) has no driver
+Warning (10034): Output port "al422_re_out" at al422_bam_bs.v(13) has no driver
+Info (278001): Inferred 1 megafunctions from design logic
+    Info (278002): Inferred adder/subtractor megafunction ("lpm_add_sub") from the following logic: "Add0"
+Info (12130): Elaborated megafunction instantiation "lpm_add_sub:Add0"
+Info (12133): Instantiated megafunction "lpm_add_sub:Add0" with the following parameter:
+    Info (12134): Parameter "LPM_WIDTH" = "16"
+    Info (12134): Parameter "LPM_DIRECTION" = "ADD"
+    Info (12134): Parameter "LPM_REPRESENTATION" = "UNSIGNED"
+    Info (12134): Parameter "ONE_INPUT_IS_CONSTANT" = "YES"
+Info (12131): Elaborated megafunction instantiation "lpm_add_sub:Add0|addcore:adder[1]", which is child of megafunction instantiation "lpm_add_sub:Add0"
+Info (12131): Elaborated megafunction instantiation "lpm_add_sub:Add0|addcore:adder[1]|a_csnbuffer:oflow_node", which is child of megafunction instantiation "lpm_add_sub:Add0"
+Info (12131): Elaborated megafunction instantiation "lpm_add_sub:Add0|addcore:adder[1]|a_csnbuffer:result_node", which is child of megafunction instantiation "lpm_add_sub:Add0"
+Info (12131): Elaborated megafunction instantiation "lpm_add_sub:Add0|look_add:look_ahead_unit", which is child of megafunction instantiation "lpm_add_sub:Add0"
+Info (12131): Elaborated megafunction instantiation "lpm_add_sub:Add0|altshift:result_ext_latency_ffs", which is child of megafunction instantiation "lpm_add_sub:Add0"
+Info (12131): Elaborated megafunction instantiation "lpm_add_sub:Add0|altshift:carry_ext_latency_ffs", which is child of megafunction instantiation "lpm_add_sub:Add0"
+Info (13014): Ignored 15 buffer(s)
+    Info (13019): Ignored 15 SOFT buffer(s)
+Warning (13024): Output pins are stuck at VCC or GND
+    Warning (13410): Pin "al422_nrst_out" is stuck at GND
+    Warning (13410): Pin "al422_re_out" is stuck at GND
+Info (280013): Promoted pin-driven signal(s) to global signal
+    Info (280014): Promoted clock signal driven by pin "in_clk" to global clock signal
+    Info (280015): Promoted clear signal driven by pin "in_nrst" to global clear signal
+Info (280013): Promoted pin-driven signal(s) to global signal
+    Info (280014): Promoted clock signal driven by pin "in_clk" to global clock signal
+    Info (280015): Promoted clear signal driven by pin "in_nrst" to global clear signal
+Info (17049): 1 registers lost all their fanouts during netlist optimizations.
+Info (21057): Implemented 91 device resources after synthesis - the final resource count might be different
+    Info (21058): Implemented 10 input pins
+    Info (21059): Implemented 16 output pins
+    Info (21063): Implemented 51 macrocells
+    Info (21073): Implemented 14 shareable expanders
+Info (144001): Generated suppressed messages file D:/altera/al422-bam-bs/output_files/al422_bam_bs.map.smsg
+Info: Quartus II 64-Bit Analysis & Synthesis was successful. 0 errors, 12 warnings
+    Info: Peak virtual memory: 416 megabytes
+    Info: Processing ended: Mon Jan 22 17:10:49 2018
+    Info: Elapsed time: 00:00:06
+    Info: Total CPU time (on all processors): 00:00:02
+
+
++------------------------------------------+
+; Analysis & Synthesis Suppressed Messages ;
++------------------------------------------+
+The suppressed messages can be found in D:/altera/al422-bam-bs/output_files/al422_bam_bs.map.smsg.
+
+
