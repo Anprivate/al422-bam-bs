@@ -1,5 +1,7 @@
 #include "LED_PANEL_BS.h"
 #include <libmaple/dma.h>
+#include <SPI.h>
+#include "SdFat.h"
 
 #define width 64
 #define height 32
@@ -12,17 +14,29 @@
 
 LED_PANEL led_panel = LED_PANEL(width, height, scan_lines, RGB_inputs, WE_out_pin);
 
+#define file_name "dump.bin"
+SdFat sd2(2);
+const uint8_t SD2_CS = PB12;   // chip select for sd2
+File dump_file;
+bool no_sd;
+
 uint16_t x_coord = 0;
 uint16_t y_coord = 0;
 uint16_t preloader = 0;
 uint8_t what_write = 0x08;
 
 void setup() {
-  //  Serial.begin(115200);
+  Serial.begin(115200);
   pinMode(PC13, OUTPUT);
 
   led_panel.begin();
   led_panel.clear();
+
+  if (!sd2.begin(SD2_CS, SD_SCK_MHZ(18))) {
+    Serial.println("sd init failed");
+    no_sd = true;
+  }
+
 }
 
 void loop() {
@@ -31,25 +45,66 @@ void loop() {
   uint8_t br = 0x08;
 
   led_panel.clear();
-  led_panel.drawCircle(16, 16, 10, led_panel.Color(0, 0, br));
 
-  led_panel.setCursor(1, 1);
-  led_panel.setTextColor(led_panel.Color(br, 0, 0));
-  led_panel.setTextSize(1);
-  led_panel.setTextWrap(false);
-  led_panel.print("Test");
+  for (uint8_t i = 0; i < 64; i++) {
+    led_panel.drawPixel(i, 0, led_panel.Color(0, 0, i * 4));
+    led_panel.drawPixel(i, 1, led_panel.Color(0, i * 4, 0));
+    led_panel.drawPixel(i, 2, led_panel.Color(i * 4, 0, 0));
 
-  led_panel.setCursor(4, 11);
-  led_panel.setTextColor(led_panel.Color(0, br, 0));
-  led_panel.print("Best");
 
-  led_panel.setCursor(7, 21);
-  led_panel.setTextColor(led_panel.Color(br, br, br));
-  led_panel.print("Case");
+  }
 
+  /*
+    static uint16_t tmp_x = 0;
+    static uint16_t tmp_y = 0;
+
+    led_panel.drawPixel(tmp_x, tmp_y, led_panel.Color(0, 0, 255));
+
+    tmp_x++;
+    if (tmp_x >= 64) {
+    tmp_x = 0;
+    tmp_y++;
+    if (tmp_y >= 32) tmp_y = 0;
+    }
+  */
+  /*
+      led_panel.drawCircle(16, 16, 10, led_panel.Color(0, 0, br));
+
+      led_panel.setCursor(1, 1);
+      led_panel.setTextColor(led_panel.Color(br, 0, 0));
+      led_panel.setTextSize(1);
+      led_panel.setTextWrap(false);
+      led_panel.print("Test");
+
+      led_panel.setCursor(4, 11);
+      led_panel.setTextColor(led_panel.Color(0, br, 0));
+      led_panel.print("Best");
+
+      led_panel.setCursor(7, 21);
+      led_panel.setTextColor(led_panel.Color(br, br, br));
+      led_panel.print("Case");
+    /*
+    /*
+      uint8_t * tmp_ptr = led_panel.GetArrayAddress();
+      uint16_t tmp_size = led_panel.GetArraySize();
+
+      if (!sd2.exists(file_name)) {
+      dump_file = sd2.open(file_name, FILE_WRITE);
+      if (!dump_file) {
+        Serial.println("open failed");
+        no_sd = true;
+      }
+
+      dump_file.write(tmp_ptr, tmp_size);
+      dump_file.close();
+      Serial.println("dump writed");
+      }
+
+  */
   led_panel.show(true);
 
   digitalWrite(PC13, HIGH);
+
   delay(10);
   /*
     delay(5000);

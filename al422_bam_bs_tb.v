@@ -3,7 +3,7 @@ module al422_bam_bs_vlg_tst();
 // test vector input registers
 reg in_clk;
 reg [15:0] address;
-reg [8:0] memory [0:8191];
+reg [7:0] memory [0:65535];
 reg in_nrst;
 // wires                                               
 wire al422_nrst;
@@ -37,9 +37,12 @@ al422_bam_bs al422_bam_bs (
 );
 
 integer j;
+integer n_File_ID;
+integer n_Temp;
 
 initial
 begin
+	/*
 	for (j=0; j < 8192; j=j+1)
 		memory[j] <= 8'h00; //reset array
 
@@ -65,12 +68,17 @@ begin
 	memory[27] <= 8'h02;
 	memory[28] <= 8'h02;
 	memory[29] <= 8'h02;
+	*/
+	
+	n_File_ID = $fopen("dump.bin", "rb");
+	n_Temp = $fread(memory, n_File_ID);
+	$fclose(n_File_ID);
 
 	in_nrst = 0;
 	in_clk = 0;                                                       
 	address = 0;
 	#15 in_nrst = 1;
-	#2000000 $stop;
+//	#2000000 $stop;
 end                                                    
 
 always                                                 

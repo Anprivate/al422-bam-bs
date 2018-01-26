@@ -32,10 +32,15 @@ class LED_PANEL : public Adafruit_GFX {
     void setPassThruColor(void);
     uint16_t Color(uint8_t r, uint8_t g, uint8_t b);
     boolean OutIsFree(void);
+    uint8_t * GetArrayAddress(void);
+    uint16_t GetArraySize(void);
     /*    uint16_t numPixels(void) const;
             static uint32_t Color(uint8_t r, uint8_t g, uint8_t b),
                    Color(uint8_t r, uint8_t g, uint8_t b, uint8_t w); */
   private:
+    const uint8_t header_size = 5;
+    const uint8_t out_signals_phases = 0x20;
+    const uint8_t bit_per_pixel = 8;
     uint16_t _width; //  width of panel (total)
     uint16_t _height; // height of panel (total)
     uint8_t segmentHeight; // height of one segment
@@ -52,7 +57,8 @@ class LED_PANEL : public Adafruit_GFX {
     boolean  passThruFlag = false;
     uint8_t * pixels;    // pixels data
     // private functions
-    uint8_t * getPixelAddress(uint16_t x, uint16_t y);
+    void WriteRowHeaders(void);
+    void WriteRowTails(void);
     // static variables and functions
     static boolean begun;
     static volatile boolean dma_is_free;
