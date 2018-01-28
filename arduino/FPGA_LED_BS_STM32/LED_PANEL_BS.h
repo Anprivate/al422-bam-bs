@@ -34,10 +34,15 @@ class LED_PANEL : public Adafruit_GFX {
     boolean OutIsFree(void);
     uint8_t * GetArrayAddress(void);
     uint16_t GetArraySize(void);
-    float CalculateEfficiency(void);
+    float CalculateEfficiency(uint16_t in_prescaler = 0, float * fps = NULL);
+    float GetMinFPS(void);
+    void SetMinFPS(float in_fps);
+    float CalculateMinBrightness(void);
+    float GetBrightness(void);
+    void SetBrightness(float in_brightness);
   private:
     const uint8_t header_size = 5;
-    const uint8_t out_signals_phases = 0x20;
+    uint8_t out_signals_phases = 0x20;
     uint16_t _width; //  width of panel (total)
     uint16_t _height; // height of panel (total)
     uint8_t segmentHeight; // height of one segment
@@ -55,6 +60,8 @@ class LED_PANEL : public Adafruit_GFX {
     uint16_t ptc_r, ptc_g, ptc_b;
     boolean  passThruFlag = false;
     float MaxEfficiency;
+    float minFPS = 200.0;
+    float curr_brightness;
     uint8_t * pixels;    // pixels data
     // private functions
     void WriteRowHeaders(void);

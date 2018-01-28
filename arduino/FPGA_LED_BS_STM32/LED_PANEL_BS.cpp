@@ -37,6 +37,8 @@ LED_PANEL::LED_PANEL(uint16_t width, uint16_t height, uint8_t scan_lines, uint8_
 
   numBytes = (bytes_in_load_line + header_size) * num_of_load_lines;
   pixels = (uint8_t *) malloc(numBytes);
+
+  MaxEfficiency = CalculateEfficiency();
 }
 
 LED_PANEL::~LED_PANEL() {
@@ -66,7 +68,7 @@ void LED_PANEL::WriteRowHeaders(void) {
     *tmp_ptr++ = oe_active;
     *tmp_ptr++ = oe_active >> 8;;
 
-    uint16_t oe_inactive = 10;
+    uint16_t oe_inactive = min_inactive - 1;
     *tmp_ptr++ = oe_inactive;
     *tmp_ptr = oe_inactive >> 8;
 
@@ -200,20 +202,50 @@ uint16_t LED_PANEL::GetArraySize(void) {
   return numBytes;
 }
 
-float LED_PANEL::CalculateEfficiency(void) {
-  uint32_t total_oe_dur = (( 0x00000001 << bpc) - 1) * oe_prescaler;
+float LED_PANEL::CalculateEfficiency(uint16_t in_prescaler, float * fps) {
+  if (in_prescaler == 0) in_prescaler = oe_prescaler;
+
+  uint32_t total_oe_dur = (( 0x00000001 << bpc) - 1) * in_prescaler;
   uint16_t data_cycle_dur = bytes_in_load_line * 2 + 7;
-  
+
   uint32_t total_cycle_dur = 0;
   uint16_t weight = 0x0001;
 
   for (uint8_t i = 0; i < bpc; i++) {
-    uint16_t oe_cycle_dur = (weight * oe_prescaler) + min_inactive + 6;
+    uint16_t oe_cycle_dur = (weight * in_prescaler) + min_inactive + 6;
     uint16_t real_cycle_dur = (oe_cycle_dur > data_cycle_dur) ? oe_cycle_dur : data_cycle_dur;
     total_cycle_dur += real_cycle_dur;
     weight <<= 1;
   }
-  return (float) total_oe_dur / (float) total_cycle_dur;
+  float newEfficiency = (float) total_oe_dur / (float) total_cycle_dur;
+
+  if (fps != NULL)
+    * fps = 50.0E6 / ((float) total_cycle_dur * _scan_lines);
+
+  return newEfficiency;
+}
+
+float LED_PANEL::GetMinFPS(void) {
+  return minFPS;
+}
+
+void LED_PANEL::SetMinFPS(float in_fps) {
+  minFPS = in_fps;
+}
+
+float LED_PANEL::CalculateMinBrightness(void) {
+  uint32_t max_total_cycle_dur = round(50.0E6 / minFPS / _scan_lines);
+  uint32_t total_oe_dur = (0x00000001 << bpc) - 1;
+  float min_eff = (float) total_oe_dur / (float) max_total_cycle_dur;
+  return min_eff / MaxEfficiency;
+}
+
+float LED_PANEL::GetBrightness(void) {
+  return curr_brightness;
+}
+
+void LED_PANEL::SetBrightness(float in_brightness) {
+  curr_brightness = in_brightness;
 }
 
 void LED_PANEL::static_begin(uint8_t we_pin) {
