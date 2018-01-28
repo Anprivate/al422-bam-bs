@@ -20,27 +20,24 @@
 
 class LED_PANEL : public Adafruit_GFX {
   public:
-    LED_PANEL (uint16_t width, uint16_t height, uint8_t scan_lines, uint8_t RGB_inputs, uint8_t we_pin); // Constuctor
+    LED_PANEL (uint16_t width, uint16_t height, uint8_t scan_lines, uint8_t RGB_inputs, uint8_t we_pin, uint8_t in_bpc = 8, uint16_t in_prescaler = 8); // Constructor
     ~LED_PANEL();
     void begin(void);
     void clear(void);
     boolean show(void);
     void show(boolean WaitForFinish);
-    void setPixelColor(uint16_t x, uint16_t y, uint8_t r, uint8_t g, uint8_t b);
+    void setPixelColor(uint16_t x, uint16_t y, uint16_t r, uint16_t g, uint16_t b);
     void drawPixel(int16_t x, int16_t y, uint16_t color);
-    void setPassThruColor(uint32_t c);
+    void setPassThruColor(uint16_t r, uint16_t g, uint16_t b);
     void setPassThruColor(void);
     uint16_t Color(uint8_t r, uint8_t g, uint8_t b);
     boolean OutIsFree(void);
     uint8_t * GetArrayAddress(void);
     uint16_t GetArraySize(void);
-    /*    uint16_t numPixels(void) const;
-            static uint32_t Color(uint8_t r, uint8_t g, uint8_t b),
-                   Color(uint8_t r, uint8_t g, uint8_t b, uint8_t w); */
+    float CalculateEfficiency(void);
   private:
     const uint8_t header_size = 5;
     const uint8_t out_signals_phases = 0x20;
-    const uint8_t bit_per_pixel = 8;
     uint16_t _width; //  width of panel (total)
     uint16_t _height; // height of panel (total)
     uint8_t segmentHeight; // height of one segment
@@ -48,13 +45,16 @@ class LED_PANEL : public Adafruit_GFX {
     uint8_t _scan_lines; // lines in scan (8/16/32)
     uint8_t _RGB_inputs; // RGB inputs (1 or 2)
     uint8_t _we_pin; // we out pin
+    uint8_t bpc;
     uint16_t numLEDs;   // number of LEDs on panel
     uint16_t bytes_in_load_line; // bytes in one load line (clear)
     uint16_t num_of_load_lines; // number of load lines
     uint16_t numBytes;  // number of bytes in buffer
     uint16_t oe_prescaler;
-    uint32_t passThruColor;
+    uint16_t min_inactive = 2;
+    uint16_t ptc_r, ptc_g, ptc_b;
     boolean  passThruFlag = false;
+    float MaxEfficiency;
     uint8_t * pixels;    // pixels data
     // private functions
     void WriteRowHeaders(void);

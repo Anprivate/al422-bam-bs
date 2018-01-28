@@ -36,49 +36,47 @@ al422_bam_bs al422_bam_bs (
 	.rgb2(rgb2)
 );
 
-integer j;
+integer j, ca;
 integer n_File_ID;
 integer n_Temp;
 
 initial
 begin
-	/*
 	for (j=0; j < 8192; j=j+1)
 		memory[j] <= 8'h00; //reset array
 
-	memory[0] <= 8'b00101111; // oe inverted, row F
-	memory[1] <= 8'h03; // active low
-	memory[2] <= 8'h00; // active high
-	memory[3] <= 8'h05; // inactive low
-	memory[4] <= 8'h00; // inactive high
-	memory[5] <= 8'h31;
-	memory[6] <= 8'h32;
-	memory[7] <= 8'h33;
-	memory[8] <= 8'h74;
-	memory[9] <= 8'b00101110; // oe inverted, row E
-	memory[10] <= 8'h05; // active low
-	memory[11] <= 8'h00; // active high
-	memory[12] <= 8'h03; // inactive low
-	memory[13] <= 8'h00; // inactive high
-	memory[14] <= 8'h34;
-	memory[15] <= 8'h33;
-	memory[16] <= 8'h32;
-	memory[17] <= 8'hF1;
+	ca = 0;
+	for (j=0; j < 10; j=j+1)
+	begin
+		memory[ca] <= 8'b00101111; // oe inverted, row F
+		memory[ca+1] <= 8'h00; // active low
+		memory[ca+2] <= 8'h00; // active high
+		memory[ca+3] <= 8'h00; // inactive low
+		memory[ca+4] <= 8'h00; // inactive high
+		memory[ca+5] <= 8'h31;
+		memory[ca+6] <= 8'h32;
+		memory[ca+7] <= 8'h33;
+		memory[ca+8] <= 8'h34;
+		memory[ca+9] <= 8'h35;
+		memory[ca+10] <= 8'h36;
+		if (j==9)
+			memory[ca+11] <= 8'h74;
+		else
+			memory[ca+11] <= 8'h44;
+		ca = ca + 12;
+	end
 	
-	memory[27] <= 8'h02;
-	memory[28] <= 8'h02;
-	memory[29] <= 8'h02;
-	*/
-	
+	/*
 	n_File_ID = $fopen("dump.bin", "rb");
 	n_Temp = $fread(memory, n_File_ID);
 	$fclose(n_File_ID);
+	*/
 
 	in_nrst = 0;
 	in_clk = 0;                                                       
 	address = 0;
 	#15 in_nrst = 1;
-//	#2000000 $stop;
+	#2000000 $stop;
 end                                                    
 
 always                                                 

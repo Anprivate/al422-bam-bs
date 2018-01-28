@@ -1,0 +1,19 @@
+data driven
+6 bytes of data, active = 3, inactive = 3
+19 tacts
+
+data driven
+7 bytes of data, active = 3, inactive = 3
+21 tacts
+
+OE driven
+7 bytes of data, active = 10, inactive = 10
+28 tacts, oe is active for 11 tacts
+
+OE driven
+7 bytes of data, active = 12, inactive = 12
+32 tacts, oe is active for 13 tacts
+
+in data driven mode: cycle in tacts = bytes of data * 2 + 7
+in OE driven mode: cycle in tacts = ((active + 1) + (inactive + 1)) + 6
+oe is active + 1 tact

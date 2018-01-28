@@ -15,7 +15,7 @@ timer_dev * LED_PANEL::timer_clk_dev;
 uint8_t LED_PANEL::timer_clk_ch;
 uint8_t LED_PANEL::last_we_pin;
 
-LED_PANEL::LED_PANEL(uint16_t width, uint16_t height, uint8_t scan_lines, uint8_t RGB_inputs, uint8_t we_pin) : Adafruit_GFX(width, height) {
+LED_PANEL::LED_PANEL(uint16_t width, uint16_t height, uint8_t scan_lines, uint8_t RGB_inputs, uint8_t we_pin, uint8_t in_bpc, uint16_t in_prescaler) : Adafruit_GFX(width, height) {
   // copy data to local variables
   _width = width;
   _height = height;
@@ -23,7 +23,8 @@ LED_PANEL::LED_PANEL(uint16_t width, uint16_t height, uint8_t scan_lines, uint8_
   _RGB_inputs = RGB_inputs;
   _we_pin = we_pin;
 
-  oe_prescaler = 8;
+  oe_prescaler = in_prescaler;
+  bpc = in_bpc;
 
   // calculations
   numLEDs = _width * _height;
@@ -32,13 +33,10 @@ LED_PANEL::LED_PANEL(uint16_t width, uint16_t height, uint8_t scan_lines, uint8_
   segmentNum = _height / segmentHeight;
 
   bytes_in_load_line = _width * segmentNum;
-  num_of_load_lines = (uint16_t) _scan_lines * bit_per_pixel;
+  num_of_load_lines = (uint16_t) _scan_lines * bpc;
 
   numBytes = (bytes_in_load_line + header_size) * num_of_load_lines;
   pixels = (uint8_t *) malloc(numBytes);
-
-  WriteRowHeaders();
-  WriteRowTails();
 }
 
 LED_PANEL::~LED_PANEL() {
@@ -58,7 +56,7 @@ void LED_PANEL::WriteRowHeaders(void) {
   uint8_t * tmp_ptr = pixels;
 
   uint8_t cur_row = _scan_lines - 1;
-  uint16_t max_weight = 0x0001 << (bit_per_pixel - 1);
+  uint16_t max_weight = (0x0001 << (bpc - 1));
   uint16_t cur_weight = max_weight;
 
   for (uint16_t i = 0; i < num_of_load_lines; i++) {
@@ -86,13 +84,15 @@ void LED_PANEL::WriteRowHeaders(void) {
 
 void LED_PANEL::WriteRowTails(void) {
   uint8_t * tmp_ptr = pixels - 1;
+
   for (uint16_t i = 0; i < num_of_load_lines; i++) {
     tmp_ptr += (bytes_in_load_line + header_size);
     uint8_t tmp_byte = * tmp_ptr;
-    tmp_byte &= ~(1 << 7);
-    tmp_byte |= (1 << 6);
+    tmp_byte |= (1 << 6); // set eol flag
     if (i == (num_of_load_lines - 1))
-      tmp_byte |= (1 << 7);
+      tmp_byte |= (1 << 7); // set eof flag
+    else
+      tmp_byte &= ~(1 << 7); // clear eof flag
     * tmp_ptr = tmp_byte;
   }
 }
@@ -104,14 +104,8 @@ void LED_PANEL::clear(void) {
   WriteRowTails();
 }
 
-void LED_PANEL::setPixelColor(uint16_t x, uint16_t y, uint8_t r, uint8_t g, uint8_t b) {
-  uint32_t tmp_color = (uint32_t) r << 16 + (uint32_t) g << 8 + (uint32_t) b;
-  drawPixel(x, y, tmp_color);
-}
-
-void LED_PANEL::drawPixel(int16_t x, int16_t y, uint16_t color) {
-
-  if ((x < 0) || (y < 0) || (x >= _width) || (y >= _height)) return;
+void LED_PANEL::setPixelColor(uint16_t x, uint16_t y, uint16_t r, uint16_t g, uint16_t b) {
+  if ((x >= _width) || (y >= _height)) return;
 
   uint8_t row_num = y % _scan_lines;
   uint16_t tmp_y = y / _scan_lines;
@@ -124,18 +118,15 @@ void LED_PANEL::drawPixel(int16_t x, int16_t y, uint16_t color) {
 
   uint16_t segment_num = tmp_y;
 
-  uint8_t * tmp_ptr = pixels + x + _width * segment_num + (bytes_in_load_line + header_size) * row_num * bit_per_pixel +  header_size;
+  uint8_t * tmp_ptr = pixels + header_size + x + _width * segment_num + (bytes_in_load_line + header_size) * row_num * bpc;
 
-  uint32_t tmp_c = (passThruFlag) ? passThruColor : expandColor(color);
   uint8_t color_mask = (upper_color) ? 0b000111000 : 0b00000111;
 
-  uint16_t max_weight = 0x0001 << bit_per_pixel;
-
-  for (uint16_t weight = 0x0001; weight < max_weight; weight <<= 1) {
+  for (uint16_t weight = (0x0001 << (16 - bpc)); weight != 0x0000; weight <<= 1) {
     uint8_t tmp_byte = 0x00;
-    if (weight & tmp_c) tmp_byte = 0x04;
-    if (weight & (tmp_c >> 8)) tmp_byte |= 0x02;
-    if (weight & (tmp_c >> 16)) tmp_byte |= 0x01;
+    if (weight & r) tmp_byte |= 0x04;
+    if (weight & g) tmp_byte |= 0x02;
+    if (weight & b) tmp_byte |= 0x01;
 
     if (upper_color) tmp_byte <<= 3;
     uint8_t out_byte = * tmp_ptr;
@@ -146,9 +137,25 @@ void LED_PANEL::drawPixel(int16_t x, int16_t y, uint16_t color) {
   }
 }
 
+void LED_PANEL::drawPixel(int16_t x, int16_t y, uint16_t color) {
+  if ((x < 0) || (y < 0) || (x >= _width) || (y >= _height)) return;
+
+  if (passThruFlag) {
+    setPixelColor(x, y, ptc_r, ptc_g, ptc_b);
+  } else {
+    uint32_t tmp_c = expandColor(color);
+    uint16_t r = (tmp_c >> 8) & 0xFF00;
+    uint16_t g = tmp_c & 0xFF00;
+    uint16_t b = (tmp_c << 8) & 0xFF00;
+    setPixelColor(x, y, r, g, b);
+  }
+}
+
 // Pass raw color value to set/enable passthrough
-void LED_PANEL::setPassThruColor(uint32_t c) {
-  passThruColor = c;
+void LED_PANEL::setPassThruColor(uint16_t r, uint16_t g, uint16_t b) {
+  ptc_r = r;
+  ptc_g = g;
+  ptc_b = b;
   passThruFlag  = true;
 }
 
@@ -193,6 +200,21 @@ uint16_t LED_PANEL::GetArraySize(void) {
   return numBytes;
 }
 
+float LED_PANEL::CalculateEfficiency(void) {
+  uint32_t total_oe_dur = (( 0x00000001 << bpc) - 1) * oe_prescaler;
+  uint16_t data_cycle_dur = bytes_in_load_line * 2 + 7;
+  
+  uint32_t total_cycle_dur = 0;
+  uint16_t weight = 0x0001;
+
+  for (uint8_t i = 0; i < bpc; i++) {
+    uint16_t oe_cycle_dur = (weight * oe_prescaler) + min_inactive + 6;
+    uint16_t real_cycle_dur = (oe_cycle_dur > data_cycle_dur) ? oe_cycle_dur : data_cycle_dur;
+    total_cycle_dur += real_cycle_dur;
+    weight <<= 1;
+  }
+  return (float) total_oe_dur / (float) total_cycle_dur;
+}
 
 void LED_PANEL::static_begin(uint8_t we_pin) {
   if (!begun) {
