@@ -7,7 +7,7 @@
 */
 
 #include "LED_PANEL_BS.h"
-#include "gamma.h"
+#include "gamma_8_16.h"
 
 boolean LED_PANEL::begun;
 volatile boolean LED_PANEL::dma_is_free;
@@ -23,7 +23,6 @@ LED_PANEL::LED_PANEL(uint16_t width, uint16_t height, uint8_t scan_lines, uint8_
   _RGB_inputs = RGB_inputs;
   _we_pin = we_pin;
 
-  oe_prescaler = in_prescaler;
   bpc = in_bpc;
 
   // calculations
@@ -35,40 +34,47 @@ LED_PANEL::LED_PANEL(uint16_t width, uint16_t height, uint8_t scan_lines, uint8_
   bytes_in_load_line = _width * segmentNum;
   num_of_load_lines = (uint16_t) _scan_lines * bpc;
 
+  if (in_prescaler == 0) {
+    max_oe_prescaler = round ((4.0 * (float) bytes_in_load_line * (float) bpc) / (float) (0x0001 << bpc));
+    cur_oe_prescaler = max_oe_prescaler;
+  }
+
   numBytes = (bytes_in_load_line + header_size) * num_of_load_lines;
   pixels = (uint8_t *) malloc(numBytes);
 
+  inactive_per_line = (uint16_t *) malloc(bpc * 2);
+
+  for (uint8_t i = 0; i < bpc; i++)
+    inactive_per_line[i] = min_inactive;
+
   MaxEfficiency = CalculateEfficiency();
+
+  curr_brightness = 1.0;
 }
 
 LED_PANEL::~LED_PANEL() {
   if (pixels)
     free(pixels);
-}
-
-// Expand 16-bit input color (Adafruit_GFX colorspace) to 24-bit (NeoPixel)
-// (w/gamma adjustment)
-static uint32_t expandColor(uint16_t color) {
-  return ((uint32_t)pgm_read_byte(&gamma5[ color >> 11       ]) << 16) |
-         ((uint32_t)pgm_read_byte(&gamma6[(color >> 5) & 0x3F]) <<  8) |
-         pgm_read_byte(&gamma5[ color       & 0x1F]);
+  if (inactive_per_line)
+    free(inactive_per_line);
 }
 
 void LED_PANEL::WriteRowHeaders(void) {
   uint8_t * tmp_ptr = pixels;
 
   uint8_t cur_row = _scan_lines - 1;
-  uint16_t max_weight = (0x0001 << (bpc - 1));
+  uint8_t cur_bit = bpc - 1;
+  uint16_t max_weight = (0x0001 << (cur_bit));
   uint16_t cur_weight = max_weight;
 
   for (uint16_t i = 0; i < num_of_load_lines; i++) {
     *tmp_ptr++ = cur_row | out_signals_phases;
 
-    uint16_t oe_active = oe_prescaler * cur_weight - 1;
+    uint16_t oe_active = cur_oe_prescaler * cur_weight - 1;
     *tmp_ptr++ = oe_active;
     *tmp_ptr++ = oe_active >> 8;;
 
-    uint16_t oe_inactive = min_inactive - 1;
+    uint16_t oe_inactive = inactive_per_line[cur_bit] - 1;
     *tmp_ptr++ = oe_inactive;
     *tmp_ptr = oe_inactive >> 8;
 
@@ -78,8 +84,10 @@ void LED_PANEL::WriteRowHeaders(void) {
       cur_row++;
       if (cur_row >= _scan_lines) cur_row = 0;
       cur_weight = 0x0001;
+      cur_bit = 0x00;
     } else {
       cur_weight <<= 1;
+      cur_bit++;
     }
   }
 }
@@ -106,7 +114,7 @@ void LED_PANEL::clear(void) {
   WriteRowTails();
 }
 
-void LED_PANEL::setPixelColor(uint16_t x, uint16_t y, uint16_t r, uint16_t g, uint16_t b) {
+void LED_PANEL::setPixelColor16(uint16_t x, uint16_t y, uint16_t r, uint16_t g, uint16_t b) {
   if ((x >= _width) || (y >= _height)) return;
 
   uint8_t row_num = y % _scan_lines;
@@ -126,9 +134,9 @@ void LED_PANEL::setPixelColor(uint16_t x, uint16_t y, uint16_t r, uint16_t g, ui
 
   for (uint16_t weight = (0x0001 << (16 - bpc)); weight != 0x0000; weight <<= 1) {
     uint8_t tmp_byte = 0x00;
-    if (weight & r) tmp_byte |= 0x04;
+    if (weight & r) tmp_byte |= 0x01;
     if (weight & g) tmp_byte |= 0x02;
-    if (weight & b) tmp_byte |= 0x01;
+    if (weight & b) tmp_byte |= 0x04;
 
     if (upper_color) tmp_byte <<= 3;
     uint8_t out_byte = * tmp_ptr;
@@ -139,30 +147,46 @@ void LED_PANEL::setPixelColor(uint16_t x, uint16_t y, uint16_t r, uint16_t g, ui
   }
 }
 
+void LED_PANEL::setPixelColor8(uint16_t x, uint16_t y, uint8_t r, uint8_t g, uint8_t b) {
+  if ((x >= _width) || (y >= _height)) return;
+
+  setPixelColor16(x, y, GetGammaCorrected(r), GetGammaCorrected(g), GetGammaCorrected(b));
+}
+
+uint16_t LED_PANEL::GetGammaCorrected(uint8_t c) {
+  return pgm_read_word(&gamma8[c]);
+}
+
 void LED_PANEL::drawPixel(int16_t x, int16_t y, uint16_t color) {
   if ((x < 0) || (y < 0) || (x >= _width) || (y >= _height)) return;
 
   if (passThruFlag) {
-    setPixelColor(x, y, ptc_r, ptc_g, ptc_b);
+    setPixelColor16(x, y, ptc_r, ptc_g, ptc_b);
   } else {
-    uint32_t tmp_c = expandColor(color);
-    uint16_t r = (tmp_c >> 8) & 0xFF00;
-    uint16_t g = tmp_c & 0xFF00;
-    uint16_t b = (tmp_c << 8) & 0xFF00;
-    setPixelColor(x, y, r, g, b);
+    uint8_t r = (color >> 8) & 0xF8;
+    uint8_t g = (color >> 3) & 0xFC;
+    uint8_t b = (color << 3) & 0xF8;
+    setPixelColor8(x, y, r, g, b);
   }
 }
 
 // Pass raw color value to set/enable passthrough
-void LED_PANEL::setPassThruColor(uint16_t r, uint16_t g, uint16_t b) {
+void LED_PANEL::setPassThruColor16(uint16_t r, uint16_t g, uint16_t b) {
   ptc_r = r;
   ptc_g = g;
   ptc_b = b;
   passThruFlag  = true;
 }
 
+void LED_PANEL::setPassThruColor8(uint8_t r, uint8_t g, uint8_t b) {
+  ptc_r = GetGammaCorrected(r);
+  ptc_g = GetGammaCorrected(g);
+  ptc_b = GetGammaCorrected(b);
+  passThruFlag  = true;
+}
+
 // Call without a value to reset (disable passthrough)
-void LED_PANEL::setPassThruColor(void) {
+void LED_PANEL::resetPassThruColor(void) {
   passThruFlag = false;
 }
 
@@ -203,16 +227,16 @@ uint16_t LED_PANEL::GetArraySize(void) {
 }
 
 float LED_PANEL::CalculateEfficiency(uint16_t in_prescaler, float * fps) {
-  if (in_prescaler == 0) in_prescaler = oe_prescaler;
+  if (in_prescaler == 0) in_prescaler = cur_oe_prescaler;
 
-  uint32_t total_oe_dur = (( 0x00000001 << bpc) - 1) * in_prescaler;
+  uint32_t total_oe_dur = ((0x00000001 << bpc) - 1) * in_prescaler;
   uint16_t data_cycle_dur = bytes_in_load_line * 2 + 7;
 
   uint32_t total_cycle_dur = 0;
   uint16_t weight = 0x0001;
 
   for (uint8_t i = 0; i < bpc; i++) {
-    uint16_t oe_cycle_dur = (weight * in_prescaler) + min_inactive + 6;
+    uint16_t oe_cycle_dur = (weight * in_prescaler) + inactive_per_line[i] + 6;
     uint16_t real_cycle_dur = (oe_cycle_dur > data_cycle_dur) ? oe_cycle_dur : data_cycle_dur;
     total_cycle_dur += real_cycle_dur;
     weight <<= 1;
@@ -223,6 +247,10 @@ float LED_PANEL::CalculateEfficiency(uint16_t in_prescaler, float * fps) {
     * fps = 50.0E6 / ((float) total_cycle_dur * _scan_lines);
 
   return newEfficiency;
+}
+
+float LED_PANEL::GetMaxEfficiency(void) {
+  return MaxEfficiency;
 }
 
 float LED_PANEL::GetMinFPS(void) {
@@ -244,8 +272,66 @@ float LED_PANEL::GetBrightness(void) {
   return curr_brightness;
 }
 
-void LED_PANEL::SetBrightness(float in_brightness) {
-  curr_brightness = in_brightness;
+float LED_PANEL::SetBrightness(float in_brightness) {
+  float minBrightness = CalculateMinBrightness();
+
+  // reset inactive lines
+  for (uint8_t i = 0; i < bpc; i++)
+    inactive_per_line[i] = min_inactive;
+
+  uint16_t work_prescaler;
+  uint32_t total_oe_dur;
+  uint32_t total_cycle_dur;
+
+  if (in_brightness > 1.0) in_brightness = 1.0;
+
+  if (in_brightness < minBrightness) {
+    work_prescaler = 1;
+    total_oe_dur = (uint32_t)((0x00000001 << bpc) - 1) * work_prescaler;
+    total_cycle_dur = round(50.0E6 / minFPS / (float) _scan_lines);
+  } else {
+    float req_efficiency = in_brightness * MaxEfficiency;
+    work_prescaler = max_oe_prescaler;
+    for (uint16_t tmp_prescaler = max_oe_prescaler; tmp_prescaler > 0; tmp_prescaler--) {
+      float calc_eff = CalculateEfficiency(tmp_prescaler);
+      if (calc_eff < req_efficiency)
+        break;
+      work_prescaler = tmp_prescaler;
+    }
+    total_oe_dur = (uint32_t)((0x00000001 << bpc) - 1) * work_prescaler;
+    total_cycle_dur = round((float)total_oe_dur / req_efficiency);
+  }
+
+  uint16_t data_cycle_dur = bytes_in_load_line * 2 + 7;
+
+  uint32_t max_oe_dur = (uint32_t)(0x00000001 << (bpc - 1)) * work_prescaler;
+
+  for (uint8_t i = bpc; i != 0; i--) {
+    uint16_t curr_oe_driven_cycle = (0x0001 << (i - 1)) * work_prescaler + 8;
+    uint16_t real_cycle_dur = (data_cycle_dur > curr_oe_driven_cycle) ? data_cycle_dur : curr_oe_driven_cycle;
+    uint32_t tmp_req_cyc_dur = total_cycle_dur / i;
+    if (real_cycle_dur > tmp_req_cyc_dur) {
+      inactive_per_line[i - 1] = min_inactive;
+      total_cycle_dur -= real_cycle_dur;
+    } else {
+      if (tmp_req_cyc_dur > curr_oe_driven_cycle)
+        inactive_per_line[i - 1] = tmp_req_cyc_dur - curr_oe_driven_cycle;
+      else
+        inactive_per_line[i - 1] = min_inactive;
+      total_cycle_dur -= (0x0001 << (i - 1)) * work_prescaler + inactive_per_line[i - 1] + 6;
+    }
+  }
+
+  cur_oe_prescaler = work_prescaler;
+
+  WriteRowHeaders();
+
+  curr_brightness = CalculateEfficiency() / MaxEfficiency;
+  return curr_brightness;
+}
+
+uint16_t LED_PANEL::GetPrescaler(void) {
+  return cur_oe_prescaler;
 }
 
 void LED_PANEL::static_begin(uint8_t we_pin) {
@@ -346,4 +432,5 @@ void LED_PANEL::static_on_full_transfer(void) {
 
   dma_is_free = true;
 }
+
 

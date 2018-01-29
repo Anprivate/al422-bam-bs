@@ -5,14 +5,15 @@
 
 #define width 64
 #define height 32
-#define bpp 2
+// bits per color (2..15)
+#define bpc 12
 
 #define scan_lines  16
 #define RGB_inputs  2
 #define WE_out_pin      PB10
 #define WE_out_pin2      PB11
 
-LED_PANEL led_panel = LED_PANEL(width, height, scan_lines, RGB_inputs, WE_out_pin);
+LED_PANEL led_panel = LED_PANEL(width, height, scan_lines, RGB_inputs, WE_out_pin, bpc);
 
 #define file_name "dump.bin"
 SdFat sd2(2);
@@ -27,6 +28,8 @@ uint8_t what_write = 0x08;
 
 void setup() {
   Serial.begin(115200);
+  //while (!Serial) {};
+
   pinMode(PC13, OUTPUT);
 
   led_panel.begin();
@@ -36,103 +39,103 @@ void setup() {
     Serial.println("sd init failed");
     no_sd = true;
   }
-
 }
 
 void loop() {
   digitalWrite(PC13, LOW);
 
-  uint8_t br = 0x08;
+  static boolean br_dir = true;
 
+  led_panel.SetBrightness(0.2);
   led_panel.clear();
 
-  for (uint8_t i = 0; i < 64; i++) {
-    led_panel.drawPixel(i, 0, led_panel.Color(0, 0, i * 4));
-    led_panel.drawPixel(i, 1, led_panel.Color(0, i * 4, 0));
-    led_panel.drawPixel(i, 2, led_panel.Color(i * 4, 0, 0));
-
-
-  }
+  for (uint8_t j = 0; j < 4; j++)
+    for (uint8_t i = 0; i < 64; i++) {
+      uint8_t tmp_c = i + j * 64;
+      led_panel.setPixelColor8(i, j, 0, 0, tmp_c);
+      led_panel.setPixelColor8(i, j + 4, 0, tmp_c, 0);
+      led_panel.setPixelColor8(i, j + 8, tmp_c, 0, 0);
+      led_panel.setPixelColor8(i, j + 16, tmp_c, tmp_c, tmp_c);
+    }
 
   /*
-    static uint16_t tmp_x = 0;
-    static uint16_t tmp_y = 0;
+    uint8_t br = 0xFF;
 
-    led_panel.drawPixel(tmp_x, tmp_y, led_panel.Color(0, 0, 255));
+    led_panel.setPixelColor8(0, 0, 0, 0, br);
 
-    tmp_x++;
-    if (tmp_x >= 64) {
-    tmp_x = 0;
-    tmp_y++;
-    if (tmp_y >= 32) tmp_y = 0;
-    }
+    led_panel.setPassThruColor8(0, 0, br);
+    led_panel.drawCircle(16, 16, 10, 0x000);
+
+    led_panel.setPassThruColor8(0, br, 0);
+    led_panel.setCursor(1, 1);
+    led_panel.setTextSize(1);
+    led_panel.setTextWrap(false);
+    led_panel.print("Test");
+
+    led_panel.setPassThruColor8(br, 0, 0);
+    led_panel.setCursor(4, 11);
+    led_panel.print("Best");
+
+    led_panel.setPassThruColor8(br, br, br);
+    led_panel.setCursor(7, 21);
+    led_panel.print("Case");
   */
   /*
-      led_panel.drawCircle(16, 16, 10, led_panel.Color(0, 0, br));
+    uint8_t * tmp_ptr = led_panel.GetArrayAddress();
+    uint16_t tmp_size = led_panel.GetArraySize();
 
-      led_panel.setCursor(1, 1);
-      led_panel.setTextColor(led_panel.Color(br, 0, 0));
-      led_panel.setTextSize(1);
-      led_panel.setTextWrap(false);
-      led_panel.print("Test");
+    if (!sd2.exists(file_name)) {
+    dump_file = sd2.open(file_name, FILE_WRITE);
+    if (!dump_file) {
+      Serial.println("open failed");
+      no_sd = true;
+    }
 
-      led_panel.setCursor(4, 11);
-      led_panel.setTextColor(led_panel.Color(0, br, 0));
-      led_panel.print("Best");
-
-      led_panel.setCursor(7, 21);
-      led_panel.setTextColor(led_panel.Color(br, br, br));
-      led_panel.print("Case");
-    /*
-    /*
-      uint8_t * tmp_ptr = led_panel.GetArrayAddress();
-      uint16_t tmp_size = led_panel.GetArraySize();
-
-      if (!sd2.exists(file_name)) {
-      dump_file = sd2.open(file_name, FILE_WRITE);
-      if (!dump_file) {
-        Serial.println("open failed");
-        no_sd = true;
-      }
-
-      dump_file.write(tmp_ptr, tmp_size);
-      dump_file.close();
-      Serial.println("dump writed");
-      }
+    dump_file.write(tmp_ptr, tmp_size);
+    dump_file.close();
+    Serial.println("dump writed");
+    }
 
   */
   led_panel.show(true);
 
   digitalWrite(PC13, HIGH);
 
-  delay(10);
   /*
-    delay(5000);
+    float fps, eff;
 
-    led_panel.clear();
-    for (uint16_t i = 0; i < width; i++) {
-      uint8_t c = i << 2;
-      uint8_t c2 = c + 128;
+    eff = led_panel.CalculateEfficiency(0, &fps);
+    Serial.flush();
+    Serial.print("Efficiency =");
+    Serial.print(eff, 5);
+    Serial.print(", FPS =");
+    Serial.print(fps, 5);
+    Serial.print(", Min br =");
+    Serial.print(led_panel.CalculateMinBrightness(), 5);
+    Serial.print(", prescaler =");
+    Serial.print(led_panel.GetPrescaler());
 
-      led_panel.drawPixel(i, 0, led_panel.Color(0, 0, c));
-      led_panel.drawPixel(i, 1, led_panel.Color(0, 0, c2));
-      led_panel.drawPixel(i, 2, led_panel.Color(0, c, 0));
-      led_panel.drawPixel(i, 3, led_panel.Color(0, c2, 0));
-      led_panel.drawPixel(i, 4, led_panel.Color(c, 0, 0));
-      led_panel.drawPixel(i, 5, led_panel.Color(c2, 0, 0));
-      led_panel.drawPixel(i, 6, led_panel.Color(c, c, c));
-      led_panel.drawPixel(i, 7, led_panel.Color(c2, c2, c2));
-      led_panel.drawPixel(i, 8, led_panel.Color(0, 255 - c, c));
-      led_panel.drawPixel(i, 9, led_panel.Color(0, 255 - c2, c2));
-      led_panel.drawPixel(i, 10, led_panel.Color(255 - c, 0, c));
-      led_panel.drawPixel(i, 11, led_panel.Color(255 - c2, 0, c2));
-      led_panel.drawPixel(i, 12, led_panel.Color(255 - c, c, 0));
-      led_panel.drawPixel(i, 13, led_panel.Color(255 - c2, c2, 0));
+    float new_br;
+    if (br_dir) {
+    new_br = led_panel.GetBrightness() * 0.95;
+    if (new_br < led_panel.CalculateMinBrightness()) {
+      br_dir = false;
+      new_br = led_panel.CalculateMinBrightness();
     }
-
-    led_panel.show();
-
-    delay(5000); */
+    } else {
+    new_br = led_panel.GetBrightness() * 1.05;
+    if (new_br > 1.0) {
+      br_dir = true;
+      new_br = 1.0;
+    }
+    }
+    Serial.print(", br =");
+    Serial.print(led_panel.SetBrightness(new_br),5);
+    Serial.print("/");
+    Serial.println(new_br, 5);
+  */
+  delay(100);
 }
+
 
 

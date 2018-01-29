@@ -20,26 +20,36 @@
 
 class LED_PANEL : public Adafruit_GFX {
   public:
-    LED_PANEL (uint16_t width, uint16_t height, uint8_t scan_lines, uint8_t RGB_inputs, uint8_t we_pin, uint8_t in_bpc = 8, uint16_t in_prescaler = 8); // Constructor
+    LED_PANEL (uint16_t width, uint16_t height, uint8_t scan_lines, uint8_t RGB_inputs, uint8_t we_pin, uint8_t in_bpc = 8, uint16_t in_prescaler = 0); // Constructor
     ~LED_PANEL();
     void begin(void);
     void clear(void);
     boolean show(void);
     void show(boolean WaitForFinish);
-    void setPixelColor(uint16_t x, uint16_t y, uint16_t r, uint16_t g, uint16_t b);
+    void setPixelColor16(uint16_t x, uint16_t y, uint16_t r, uint16_t g, uint16_t b);
+    void setPixelColor8(uint16_t x, uint16_t y, uint8_t r, uint8_t g, uint8_t b);
+    uint16_t GetGammaCorrected(uint8_t c);
     void drawPixel(int16_t x, int16_t y, uint16_t color);
-    void setPassThruColor(uint16_t r, uint16_t g, uint16_t b);
-    void setPassThruColor(void);
+    void setPassThruColor8(uint8_t r, uint8_t g, uint8_t b);
+    void setPassThruColor16(uint16_t r, uint16_t g, uint16_t b);
+    void resetPassThruColor(void);
     uint16_t Color(uint8_t r, uint8_t g, uint8_t b);
+    //
     boolean OutIsFree(void);
     uint8_t * GetArrayAddress(void);
     uint16_t GetArraySize(void);
+    //
     float CalculateEfficiency(uint16_t in_prescaler = 0, float * fps = NULL);
+    float GetMaxEfficiency(void);
     float GetMinFPS(void);
     void SetMinFPS(float in_fps);
     float CalculateMinBrightness(void);
     float GetBrightness(void);
-    void SetBrightness(float in_brightness);
+    float SetBrightness(float in_brightness);
+    uint16_t GetPrescaler(void);
+    // area filling utilities
+    void PutPictureRGB565(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t * image);
+    void PutPictureRGB888(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t * image);
   private:
     const uint8_t header_size = 5;
     uint8_t out_signals_phases = 0x20;
@@ -55,8 +65,10 @@ class LED_PANEL : public Adafruit_GFX {
     uint16_t bytes_in_load_line; // bytes in one load line (clear)
     uint16_t num_of_load_lines; // number of load lines
     uint16_t numBytes;  // number of bytes in buffer
-    uint16_t oe_prescaler;
+    uint16_t max_oe_prescaler;
+    uint16_t cur_oe_prescaler;
     uint16_t min_inactive = 2;
+    uint16_t * inactive_per_line;
     uint16_t ptc_r, ptc_g, ptc_b;
     boolean  passThruFlag = false;
     float MaxEfficiency;
@@ -78,4 +90,5 @@ class LED_PANEL : public Adafruit_GFX {
 };
 
 #endif // FPGA_LED_PANEL
+
 
