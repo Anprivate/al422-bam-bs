@@ -48,8 +48,8 @@ class LED_PANEL : public Adafruit_GFX {
     float SetBrightness(float in_brightness);
     uint16_t GetPrescaler(void);
     // area filling utilities
-    void PutPictureRGB565(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t * image);
-    void PutPictureRGB888(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t * image);
+    void PutPictureRGB565(uint16_t in_x, uint16_t in_y, uint16_t in_width, uint16_t in_height, uint8_t * image);
+    void PutPictureRGB888(uint16_t in_x, uint16_t in_y, uint16_t in_width, uint16_t in_height, uint8_t * image);
   private:
     const uint8_t header_size = 5;
     uint8_t out_signals_phases = 0x20;

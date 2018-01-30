@@ -149,11 +149,114 @@ void LED_PANEL::setPixelColor16(uint16_t x, uint16_t y, uint16_t r, uint16_t g, 
 
 void LED_PANEL::setPixelColor8(uint16_t x, uint16_t y, uint8_t r, uint8_t g, uint8_t b) {
   if ((x >= _width) || (y >= _height)) return;
-
   setPixelColor16(x, y, GetGammaCorrected(r), GetGammaCorrected(g), GetGammaCorrected(b));
 }
 
-uint16_t LED_PANEL::GetGammaCorrected(uint8_t c) {
+void LED_PANEL::PutPictureRGB565(uint16_t in_x, uint16_t in_y, uint16_t in_width, uint16_t in_height, uint8_t * image) {
+  if ((in_x >= _width) || (in_y >= _height)) return;
+
+  uint16_t * in_ptr = (uint16_t *) image;
+
+  for (uint16_t i = 0; i < in_height; i++) {
+    uint16_t y = in_y + i;
+    if (y >= _height) break;
+
+    uint8_t row_num = y % _scan_lines;
+    uint16_t tmp_y = y / _scan_lines;
+
+    boolean upper_color = false;
+    if (_RGB_inputs == 2) {
+      if (tmp_y & 0x0001) upper_color = true;
+      tmp_y >>= 1;
+    }
+
+    uint16_t segment_num = tmp_y;
+
+    uint8_t color_mask = (upper_color) ? 0b000111000 : 0b00000111;
+
+    uint8_t * out_ptr = pixels + header_size + in_x + _width * segment_num + (bytes_in_load_line + header_size) * row_num * bpc;
+
+    for (uint16_t weight = (0x0001 << (16 - bpc)); weight != 0x0000; weight <<= 1) {
+      uint16_t * in_line_ptr = in_ptr;
+      uint8_t * out_line_ptr = out_ptr;
+
+      for (uint16_t j = 0; j < in_width; j++) {
+        if ((j + in_x) >= _width) break;
+
+        uint16_t color = *in_line_ptr++;
+        uint16_t r = GetGammaCorrected((color >> 8) & 0xF8);
+        uint16_t g = GetGammaCorrected((color >> 3) & 0xFC);
+        uint16_t b = GetGammaCorrected((color << 3) & 0xF8);
+
+        uint8_t tmp_byte = 0x00;
+        if (weight & r) tmp_byte |= 0x01;
+        if (weight & g) tmp_byte |= 0x02;
+        if (weight & b) tmp_byte |= 0x04;
+
+        if (upper_color) tmp_byte <<= 3;
+        uint8_t out_byte = * out_line_ptr;
+        out_byte &= ~color_mask;
+        out_byte |= tmp_byte;
+        * out_line_ptr ++ = out_byte;
+      }
+      out_ptr += (bytes_in_load_line + header_size);
+    }
+    in_ptr += in_width;
+  }
+}
+
+void LED_PANEL::PutPictureRGB888(uint16_t in_x, uint16_t in_y, uint16_t in_width, uint16_t in_height, uint8_t * image) {
+  if ((in_x >= _width) || (in_y >= _height)) return;
+
+  uint8_t * in_ptr = image;
+
+  for (uint16_t i = 0; i < in_height; i++) {
+    uint16_t y = in_y + i;
+    if (y >= _height) break;
+
+    uint8_t row_num = y % _scan_lines;
+    uint16_t tmp_y = y / _scan_lines;
+
+    boolean upper_color = false;
+    if (_RGB_inputs == 2) {
+      if (tmp_y & 0x0001) upper_color = true;
+      tmp_y >>= 1;
+    }
+
+    uint16_t segment_num = tmp_y;
+
+    uint8_t color_mask = (upper_color) ? 0b000111000 : 0b00000111;
+
+    uint8_t * out_ptr = pixels + header_size + in_x + _width * segment_num + (bytes_in_load_line + header_size) * row_num * bpc;
+
+    for (uint16_t weight = (0x0001 << (16 - bpc)); weight != 0x0000; weight <<= 1) {
+      uint8_t * in_line_ptr = in_ptr;
+      uint8_t * out_line_ptr = out_ptr;
+
+      for (uint16_t j = 0; j < in_width; j++) {
+        if ((j + in_x) >= _width) break;
+        uint16_t r = GetGammaCorrected(*in_line_ptr++);
+        uint16_t g = GetGammaCorrected(*in_line_ptr++);
+        uint16_t b = GetGammaCorrected(*in_line_ptr++);
+
+        uint8_t tmp_byte = 0x00;
+        if (weight & r) tmp_byte |= 0x01;
+        if (weight & g) tmp_byte |= 0x02;
+        if (weight & b) tmp_byte |= 0x04;
+
+        if (upper_color) tmp_byte <<= 3;
+        uint8_t out_byte = * out_line_ptr;
+        out_byte &= ~color_mask;
+        out_byte |= tmp_byte;
+        * out_line_ptr ++ = out_byte;
+      }
+      out_ptr += (bytes_in_load_line + header_size);
+    }
+    in_ptr += (in_width * 3);
+  }
+}
+
+inline uint16_t LED_PANEL::GetGammaCorrected(uint8_t c) {
   return pgm_read_word(&gamma8[c]);
 }
 

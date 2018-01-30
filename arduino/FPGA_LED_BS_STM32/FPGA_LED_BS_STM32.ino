@@ -1,63 +1,72 @@
 #include "LED_PANEL_BS.h"
 #include <libmaple/dma.h>
 #include <SPI.h>
-#include "SdFat.h"
+#include <SdFat.h>
 
 #define width 64
 #define height 32
 // bits per color (2..15)
-#define bpc 12
+#define bpc 10
 
 #define scan_lines  16
 #define RGB_inputs  2
 #define WE_out_pin      PB10
-#define WE_out_pin2      PB11
 
 LED_PANEL led_panel = LED_PANEL(width, height, scan_lines, RGB_inputs, WE_out_pin, bpc);
 
-#define file_name "dump.bin"
 SdFat sd2(2);
 const uint8_t SD2_CS = PB12;   // chip select for sd2
-File dump_file;
 bool no_sd;
 
-uint16_t x_coord = 0;
-uint16_t y_coord = 0;
-uint16_t preloader = 0;
-uint8_t what_write = 0x08;
+#define file_name "dump.bin"
+File dump_file;
+
+#define video_file_name "video888.raw"
+File video_file;
+#define fps   24
+#define ms_per_frame  (1000/fps)
+uint8_t line_buffer[width * 3];
+unsigned long last_frame_indicated_at;
 
 void setup() {
   Serial.begin(115200);
-  //while (!Serial) {};
+  //  while (!Serial) {};
 
   pinMode(PC13, OUTPUT);
 
   led_panel.begin();
   led_panel.clear();
 
+  no_sd = false;
   if (!sd2.begin(SD2_CS, SD_SCK_MHZ(18))) {
     Serial.println("sd init failed");
     no_sd = true;
   }
+
+  video_file = sd2.open(video_file_name, FILE_READ);
+  if (!video_file) {
+    Serial.println("open failed");
+    no_sd = true;
+  }
+
+  led_panel.SetBrightness(0.1);
+  last_frame_indicated_at = millis();
 }
 
 void loop() {
   digitalWrite(PC13, LOW);
 
-  static boolean br_dir = true;
-
-  led_panel.SetBrightness(0.2);
   led_panel.clear();
-
-  for (uint8_t j = 0; j < 4; j++)
-    for (uint8_t i = 0; i < 64; i++) {
-      uint8_t tmp_c = i + j * 64;
-      led_panel.setPixelColor8(i, j, 0, 0, tmp_c);
-      led_panel.setPixelColor8(i, j + 4, 0, tmp_c, 0);
-      led_panel.setPixelColor8(i, j + 8, tmp_c, 0, 0);
-      led_panel.setPixelColor8(i, j + 16, tmp_c, tmp_c, tmp_c);
-    }
-
+  /*
+    for (uint8_t j = 0; j < 4; j++)
+      for (uint8_t i = 0; i < 64; i++) {
+        uint8_t tmp_c = i + j * 64;
+        led_panel.setPixelColor8(i, j, 0, 0, tmp_c);
+        led_panel.setPixelColor8(i, j + 4, 0, tmp_c, 0);
+        led_panel.setPixelColor8(i, j + 8, tmp_c, 0, 0);
+        led_panel.setPixelColor8(i, j + 16, tmp_c, tmp_c, tmp_c);
+      }
+  */
   /*
     uint8_t br = 0xFF;
 
@@ -97,11 +106,38 @@ void loop() {
     }
 
   */
+
+  if (no_sd) {
+    led_panel.setCursor(1, 1);
+    led_panel.setTextColor(led_panel.Color(80, 80, 0));
+    led_panel.setTextSize(1);
+    led_panel.setTextWrap(false);
+    led_panel.print("SD error");
+  } else {
+    for (uint16_t y = 0; y < height; y++) {
+      int bytes_readed = video_file.read(line_buffer, width * 3);
+      if (bytes_readed < width * 3) {
+        video_file.rewind();
+        break;
+      }
+      led_panel.PutPictureRGB888(0, y, width, 1, line_buffer);
+    }
+  }
+
+  unsigned long from_last_frame = millis() - last_frame_indicated_at;
+  if (from_last_frame < ms_per_frame)
+    delay(ms_per_frame - from_last_frame);
+
+  led_panel.show(false);
+  last_frame_indicated_at = millis();
+
   led_panel.show(true);
 
   digitalWrite(PC13, HIGH);
 
   /*
+    static boolean br_dir = true;
+
     float fps, eff;
 
     eff = led_panel.CalculateEfficiency(0, &fps);
@@ -134,7 +170,7 @@ void loop() {
     Serial.print("/");
     Serial.println(new_br, 5);
   */
-  delay(100);
+  // delay(100);
 }
 
 
