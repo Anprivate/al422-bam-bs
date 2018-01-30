@@ -105,6 +105,7 @@ in_data[7] => Mux0.IN1
 in_data[7] => Mux8.IN1
 in_data[7] => oe_inactive_register.DATAB
 in_data[7] => oe_inactive_register.DATAB
+in_data[7] => always11.IN0
 in_data[7] => always12.IN1
 al422_nrst_out <= al422_nrst_out.DB_MAX_OUTPUT_PORT_TYPE
 al422_re_out <= al422_re_out.DB_MAX_OUTPUT_PORT_TYPE

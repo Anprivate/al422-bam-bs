@@ -6,7 +6,7 @@
 #define width 64
 #define height 32
 // bits per color (2..15)
-#define bpc 10
+#define bpc 8
 
 #define scan_lines  16
 #define RGB_inputs  2
@@ -23,8 +23,7 @@ File dump_file;
 
 #define video_file_name "video888.raw"
 File video_file;
-#define fps   24
-#define ms_per_frame  (1000/fps)
+#define ms_per_frame  (1000/24)
 uint8_t line_buffer[width * 3];
 unsigned long last_frame_indicated_at;
 
@@ -57,16 +56,21 @@ void loop() {
   digitalWrite(PC13, LOW);
 
   led_panel.clear();
-  /*
-    for (uint8_t j = 0; j < 4; j++)
-      for (uint8_t i = 0; i < 64; i++) {
-        uint8_t tmp_c = i + j * 64;
-        led_panel.setPixelColor8(i, j, 0, 0, tmp_c);
-        led_panel.setPixelColor8(i, j + 4, 0, tmp_c, 0);
-        led_panel.setPixelColor8(i, j + 8, tmp_c, 0, 0);
-        led_panel.setPixelColor8(i, j + 16, tmp_c, tmp_c, tmp_c);
-      }
-  */
+
+  for (uint8_t j = 0; j < 4; j++)
+    for (uint8_t i = 0; i < 64; i++) {
+      uint8_t tmp_c = i + j * 64;
+      led_panel.setPixelColor8(i, j, 0, 0, tmp_c);
+      led_panel.setPixelColor8(i, j + 4, 0, tmp_c, 0);
+      led_panel.setPixelColor8(i, j + 8, tmp_c, 0, 0);
+      led_panel.setPixelColor8(i, j + 16, tmp_c, tmp_c, tmp_c);
+    }
+
+  led_panel.setPassThruColor8(0xFF, 0xFF, 0xFF);
+  led_panel.setCursor(3, 23);
+  led_panel.setTextSize(1);
+  led_panel.setTextWrap(false);
+  led_panel.print(led_panel.GetBrightness() * 100.0, 1);
   /*
     uint8_t br = 0xFF;
 
@@ -106,71 +110,72 @@ void loop() {
     }
 
   */
-
-  if (no_sd) {
-    led_panel.setCursor(1, 1);
-    led_panel.setTextColor(led_panel.Color(80, 80, 0));
-    led_panel.setTextSize(1);
-    led_panel.setTextWrap(false);
-    led_panel.print("SD error");
-  } else {
-    for (uint16_t y = 0; y < height; y++) {
-      int bytes_readed = video_file.read(line_buffer, width * 3);
-      if (bytes_readed < width * 3) {
-        video_file.rewind();
-        break;
+  /*
+    if (no_sd) {
+      led_panel.setCursor(1, 1);
+      led_panel.setTextColor(led_panel.Color(80, 80, 0));
+      led_panel.setTextSize(1);
+      led_panel.setTextWrap(false);
+      led_panel.print("SD error");
+    } else {
+      for (uint16_t y = 0; y < height; y++) {
+        int bytes_readed = video_file.read(line_buffer, width * 3);
+        if (bytes_readed < width * 3) {
+          video_file.rewind();
+          break;
+        }
+        led_panel.PutPictureRGB888(0, y, width, 1, line_buffer);
       }
-      led_panel.PutPictureRGB888(0, y, width, 1, line_buffer);
     }
-  }
 
-  unsigned long from_last_frame = millis() - last_frame_indicated_at;
-  if (from_last_frame < ms_per_frame)
-    delay(ms_per_frame - from_last_frame);
+    unsigned long from_last_frame = millis() - last_frame_indicated_at;
+    if (from_last_frame < ms_per_frame)
+      delay(ms_per_frame - from_last_frame);
 
-  led_panel.show(false);
-  last_frame_indicated_at = millis();
-
+    led_panel.show(false);
+    last_frame_indicated_at = millis();
+  */
   led_panel.show(true);
 
   digitalWrite(PC13, HIGH);
 
-  /*
-    static boolean br_dir = true;
 
-    float fps, eff;
+  static boolean br_dir = true;
 
-    eff = led_panel.CalculateEfficiency(0, &fps);
-    Serial.flush();
-    Serial.print("Efficiency =");
-    Serial.print(eff, 5);
-    Serial.print(", FPS =");
-    Serial.print(fps, 5);
-    Serial.print(", Min br =");
-    Serial.print(led_panel.CalculateMinBrightness(), 5);
-    Serial.print(", prescaler =");
-    Serial.print(led_panel.GetPrescaler());
+  float fps, eff;
 
-    float new_br;
-    if (br_dir) {
+  eff = led_panel.CalculateEfficiency(0, &fps);
+  Serial.flush();
+  Serial.print("Efficiency =");
+  Serial.print(eff, 5);
+  Serial.print(", FPS =");
+  Serial.print(fps, 5);
+  Serial.print(", Min br =");
+  Serial.print(led_panel.CalculateMinBrightness(), 5);
+  Serial.print(", prescaler =");
+  Serial.print(led_panel.GetPrescaler());
+
+  float new_br;
+  if (br_dir) {
     new_br = led_panel.GetBrightness() * 0.95;
     if (new_br < led_panel.CalculateMinBrightness()) {
       br_dir = false;
       new_br = led_panel.CalculateMinBrightness();
     }
-    } else {
+  } else {
     new_br = led_panel.GetBrightness() * 1.05;
     if (new_br > 1.0) {
       br_dir = true;
       new_br = 1.0;
     }
-    }
-    Serial.print(", br =");
-    Serial.print(led_panel.SetBrightness(new_br),5);
-    Serial.print("/");
-    Serial.println(new_br, 5);
-  */
-  // delay(100);
+  }
+  Serial.print(", br =");
+  Serial.print(led_panel.SetBrightness(new_br), 5);
+  Serial.print("/");
+  Serial.println(new_br, 5);
+  Serial.flush();
+
+  delay(10);
 }
 
 

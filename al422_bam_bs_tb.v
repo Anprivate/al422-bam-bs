@@ -60,7 +60,7 @@ begin
 		memory[ca+9] <= 8'h35;
 		memory[ca+10] <= 8'h36;
 		if (j==9)
-			memory[ca+11] <= 8'h74;
+			memory[ca+11] <= 8'h84;
 		else
 			memory[ca+11] <= 8'h44;
 		ca = ca + 12;

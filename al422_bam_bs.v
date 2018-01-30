@@ -159,7 +159,7 @@ module al422_bam_bs (
 			if (next_row_start) 
 				eol_fixed <= 1'b0;
 			else
-				if ((phase_counter == 3'h5) & !data_phase & in_data[6])
+				if ((phase_counter == 3'h5) & !data_phase & (in_data[6] | in_data[7]))
 					eol_fixed <= 1'b1;
 
 	always @(posedge in_clk or negedge in_nrst)

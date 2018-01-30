@@ -24,7 +24,7 @@
 (DELAYFILE
   (SDFVERSION "2.1")
   (DESIGN "al422_bam_bs")
-  (DATE "01/28/2018 14:26:45")
+  (DATE "01/30/2018 17:55:22")
   (VENDOR "Altera")
   (PROGRAM "Quartus II 64-Bit")
   (VERSION "Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition")
@@ -127,6 +127,15 @@
   )
   (CELL
     (CELLTYPE "max_asynch_io")
+    (INSTANCE in_data\[7\]\~I.asynch_inst)
+    (DELAY
+      (ABSOLUTE
+        (IOPATH padio dataout (1400:1400:1400) (1400:1400:1400))
+      )
+    )
+  )
+  (CELL
+    (CELLTYPE "max_asynch_io")
     (INSTANCE in_data\[6\]\~I.asynch_inst)
     (DELAY
       (ABSOLUTE
@@ -139,6 +148,9 @@
     (INSTANCE eol_fixed.pcom)
     (DELAY
       (ABSOLUTE
+        (IOPATH pterm0[0] regin (3200:3200:3200) (3200:3200:3200))
+        (IOPATH pterm0[1] regin (3200:3200:3200) (3200:3200:3200))
+        (IOPATH pterm0[2] regin (3200:3200:3200) (3200:3200:3200))
         (IOPATH pterm1[0] regin (3200:3200:3200) (3200:3200:3200))
         (IOPATH pterm1[1] regin (3200:3200:3200) (3200:3200:3200))
         (IOPATH pterm1[2] regin (3200:3200:3200) (3200:3200:3200))
@@ -156,6 +168,17 @@
         (IOPATH pterm3[0] regin (3200:3200:3200) (3200:3200:3200))
         (IOPATH pterm3[1] regin (3200:3200:3200) (3200:3200:3200))
         (IOPATH pterm3[2] regin (3200:3200:3200) (3200:3200:3200))
+        (IOPATH pterm3[3] regin (3200:3200:3200) (3200:3200:3200))
+        (IOPATH pterm3[4] regin (3200:3200:3200) (3200:3200:3200))
+        (IOPATH pterm3[5] regin (3200:3200:3200) (3200:3200:3200))
+        (IOPATH pterm3[6] regin (3200:3200:3200) (3200:3200:3200))
+        (IOPATH pterm4[0] regin (3200:3200:3200) (3200:3200:3200))
+        (IOPATH pterm4[1] regin (3200:3200:3200) (3200:3200:3200))
+        (IOPATH pterm4[2] regin (3200:3200:3200) (3200:3200:3200))
+        (IOPATH pterm4[3] regin (3200:3200:3200) (3200:3200:3200))
+        (IOPATH pterm4[4] regin (3200:3200:3200) (3200:3200:3200))
+        (IOPATH pterm4[5] regin (3200:3200:3200) (3200:3200:3200))
+        (IOPATH pterm4[6] regin (3200:3200:3200) (3200:3200:3200))
         (IOPATH fbkin regin (5500:5500:5500) (5500:5500:5500))
       )
     )
@@ -541,15 +564,6 @@
       (HOLD pena[0] (posedge clk) (1300:1300:1300))
       (HOLD pena[1] (posedge clk) (1300:1300:1300))
       (HOLD pena[2] (posedge clk) (1300:1300:1300))
-    )
-  )
-  (CELL
-    (CELLTYPE "max_asynch_io")
-    (INSTANCE in_data\[7\]\~I.asynch_inst)
-    (DELAY
-      (ABSOLUTE
-        (IOPATH padio dataout (1400:1400:1400) (1400:1400:1400))
-      )
     )
   )
   (CELL
@@ -1009,7 +1023,7 @@
   )
   (CELL
     (CELLTYPE "max_asynch_sexp")
-    (INSTANCE Equal2\~19.pcom)
+    (INSTANCE Equal2\~17.pcom)
     (DELAY
       (ABSOLUTE
         (IOPATH datain[0] dataout (3900:3900:3900) (3900:3900:3900))
@@ -1186,7 +1200,7 @@
   )
   (CELL
     (CELLTYPE "max_asynch_sexp")
-    (INSTANCE Equal2\~16sexp.pcom)
+    (INSTANCE Equal2\~19.pcom)
     (DELAY
       (ABSOLUTE
         (IOPATH datain[0] dataout (3900:3900:3900) (3900:3900:3900))
@@ -1365,7 +1379,7 @@
   )
   (CELL
     (CELLTYPE "max_asynch_sexp")
-    (INSTANCE Equal2\~17.pcom)
+    (INSTANCE Equal2\~18.pcom)
     (DELAY
       (ABSOLUTE
         (IOPATH datain[0] dataout (3900:3900:3900) (3900:3900:3900))
@@ -1655,7 +1669,7 @@
   )
   (CELL
     (CELLTYPE "max_asynch_sexp")
-    (INSTANCE Equal2\~18.pcom)
+    (INSTANCE Equal2\~16sexp.pcom)
     (DELAY
       (ABSOLUTE
         (IOPATH datain[0] dataout (3900:3900:3900) (3900:3900:3900))

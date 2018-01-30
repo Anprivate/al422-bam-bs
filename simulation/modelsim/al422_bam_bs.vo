@@ -16,7 +16,7 @@
 // PROGRAM "Quartus II 64-Bit"
 // VERSION "Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition"
 
-// DATE "01/28/2018 14:26:45"
+// DATE "01/30/2018 17:55:22"
 
 // 
 // Device: Altera EPM3064ATC44-10 Package TQFP44
@@ -107,21 +107,21 @@ wire \Mux0~61_dataout ;
 wire \Mux0~62_dataout ;
 wire \Mux0~63_dataout ;
 wire \Mux0~64_dataout ;
-wire \Equal2~19_dataout ;
+wire \Equal2~17_dataout ;
 wire \Mux0~39sexp1_dataout ;
 wire \Mux0~39sexp2_dataout ;
 wire \Mux0~43sexp1_dataout ;
 wire \Mux0~43sexp2_dataout ;
 wire \Mux0~43sexp3_dataout ;
 wire \Mux6~23_dataout ;
-wire \Equal2~16sexp_dataout ;
+wire \Equal2~19_dataout ;
 wire \Mux0~50_dataout ;
 wire \Mux0~51_dataout ;
 wire \Mux0~52_dataout ;
 wire \Mux0~53_dataout ;
 wire \Mux0~54_dataout ;
 wire \Mux5~22_dataout ;
-wire \Equal2~17_dataout ;
+wire \Equal2~18_dataout ;
 wire \Mux0~55_dataout ;
 wire \Mux0~56_dataout ;
 wire \Mux0~57_dataout ;
@@ -129,7 +129,7 @@ wire \Mux0~58_dataout ;
 wire \Mux0~59_dataout ;
 wire \Mux3~20_dataout ;
 wire \Mux2~19_dataout ;
-wire \Equal2~18_dataout ;
+wire \Equal2~16sexp_dataout ;
 wire \Mux8~38_dataout ;
 wire \Mux4~21_dataout ;
 wire \Mux1~18_dataout ;
@@ -146,13 +146,13 @@ wire \al422_nrst~dataout ;
 wire \al422_nrst_out~4_dataout ;
 wire \led_clk~dataout ;
 wire \led_clk_out~5_dataout ;
-wire [15:0] oe_counter;
-wire [2:0] out_phases;
-wire [2:0] phase_counter;
-wire [7:0] \in_data~dataout ;
 wire [15:0] oe_inactive_register;
-wire [4:0] cur_row;
+wire [2:0] phase_counter;
+wire [2:0] out_phases;
+wire [15:0] oe_counter;
 wire [5:0] rgb_data;
+wire [7:0] \in_data~dataout ;
+wire [4:0] cur_row;
 
 
 // Location: PIN_37
@@ -221,7 +221,7 @@ defparam \phase_counter[0] .power_up = "low";
 defparam \phase_counter[0] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: LC3
+// Location: LC52
 max_mcell data_phase(
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -248,6 +248,19 @@ defparam data_phase.power_up = "low";
 defparam data_phase.register_mode = "tff";
 // synopsys translate_on
 
+// Location: PIN_3
+max_io \in_data[7]~I (
+	.datain(gnd),
+	.oe(gnd),
+	.dataout(\in_data~dataout [7]),
+	.padio(in_data[7]));
+// synopsys translate_off
+defparam \in_data[7]~I .bus_hold = "false";
+defparam \in_data[7]~I .open_drain_output = "false";
+defparam \in_data[7]~I .operation_mode = "input";
+defparam \in_data[7]~I .weak_pull_up = "false";
+// synopsys translate_on
+
 // Location: PIN_44
 max_io \in_data[6]~I (
 	.datain(gnd),
@@ -261,19 +274,21 @@ defparam \in_data[6]~I .operation_mode = "input";
 defparam \in_data[6]~I .weak_pull_up = "false";
 // synopsys translate_on
 
-// Location: LC6
+// Location: LC60
 max_mcell eol_fixed(
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
 	.pexpin(gnd),
 	.fpin(vcc),
-	.pterm0({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
-	.pterm1({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!\eol_fixed~dataout ,!\oe_phase_is_finished~dataout ,\in_data~dataout [6],phase_counter[0],!phase_counter[1],phase_counter[2],!
+	.pterm0({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\load_phase_is_finished~dataout ,\eol_fixed~dataout ,\oe_phase_is_finished~dataout }),
+	.pterm1({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!\eol_fixed~dataout ,!\oe_phase_is_finished~dataout ,phase_counter[0],!phase_counter[1],phase_counter[2],!\data_phase~dataout ,
+\in_data~dataout [7]}),
+	.pterm2({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\in_data~dataout [6],!\eol_fixed~dataout ,!\oe_phase_is_finished~dataout ,phase_counter[0],!phase_counter[1],phase_counter[2],!
 \data_phase~dataout }),
-	.pterm2({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!\load_phase_is_finished~dataout ,!\eol_fixed~dataout ,\in_data~dataout [6],phase_counter[0],!phase_counter[1],phase_counter[2],!
+	.pterm3({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!\load_phase_is_finished~dataout ,!\eol_fixed~dataout ,phase_counter[0],!phase_counter[1],phase_counter[2],!\data_phase~dataout ,
+\in_data~dataout [7]}),
+	.pterm4({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!\load_phase_is_finished~dataout ,\in_data~dataout [6],!\eol_fixed~dataout ,phase_counter[0],!phase_counter[1],phase_counter[2],!
 \data_phase~dataout }),
-	.pterm3({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\load_phase_is_finished~dataout ,\eol_fixed~dataout ,\oe_phase_is_finished~dataout }),
-	.pterm4({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
 	.pterm5({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
 	.pxor({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
 	.pclk({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
@@ -290,7 +305,7 @@ defparam eol_fixed.power_up = "low";
 defparam eol_fixed.register_mode = "tff";
 // synopsys translate_on
 
-// Location: LC7
+// Location: LC55
 max_mcell load_phase_is_finished(
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -330,7 +345,7 @@ defparam \in_data[3]~I .operation_mode = "input";
 defparam \in_data[3]~I .weak_pull_up = "false";
 // synopsys translate_on
 
-// Location: LC39
+// Location: LC31
 max_mcell \oe_inactive_register[3] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -370,7 +385,7 @@ defparam \in_data[2]~I .operation_mode = "input";
 defparam \in_data[2]~I .weak_pull_up = "false";
 // synopsys translate_on
 
-// Location: LC62
+// Location: LC43
 max_mcell \oe_inactive_register[2] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -410,7 +425,7 @@ defparam \in_data[1]~I .operation_mode = "input";
 defparam \in_data[1]~I .weak_pull_up = "false";
 // synopsys translate_on
 
-// Location: LC55
+// Location: LC10
 max_mcell \oe_inactive_register[1] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -437,7 +452,7 @@ defparam \oe_inactive_register[1] .power_up = "low";
 defparam \oe_inactive_register[1] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: LC9
+// Location: LC16
 max_mcell \oe_inactive_register[0] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -477,7 +492,7 @@ defparam \in_data[5]~I .operation_mode = "input";
 defparam \in_data[5]~I .weak_pull_up = "false";
 // synopsys translate_on
 
-// Location: LC27
+// Location: LC6
 max_mcell \oe_inactive_register[5] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -517,7 +532,7 @@ defparam \in_data[4]~I .operation_mode = "input";
 defparam \in_data[4]~I .weak_pull_up = "false";
 // synopsys translate_on
 
-// Location: LC31
+// Location: LC27
 max_mcell \oe_inactive_register[4] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -544,12 +559,12 @@ defparam \oe_inactive_register[4] .power_up = "low";
 defparam \oe_inactive_register[4] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: SEXP23
+// Location: SEXP22
 max_sexp \Mux11~19 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[0],!oe_counter[1],!oe_counter[2],!oe_counter[3]}),
 	.dataout(\Mux11~19_dataout ));
 
-// Location: LC58
+// Location: LC57
 max_mcell \oe_inactive_register[14] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -576,7 +591,7 @@ defparam \oe_inactive_register[14] .power_up = "low";
 defparam \oe_inactive_register[14] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: LC42
+// Location: LC22
 max_mcell \oe_inactive_register[11] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -603,20 +618,7 @@ defparam \oe_inactive_register[11] .power_up = "low";
 defparam \oe_inactive_register[11] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: PIN_3
-max_io \in_data[7]~I (
-	.datain(gnd),
-	.oe(gnd),
-	.dataout(\in_data~dataout [7]),
-	.padio(in_data[7]));
-// synopsys translate_off
-defparam \in_data[7]~I .bus_hold = "false";
-defparam \in_data[7]~I .open_drain_output = "false";
-defparam \in_data[7]~I .operation_mode = "input";
-defparam \in_data[7]~I .weak_pull_up = "false";
-// synopsys translate_on
-
-// Location: LC61
+// Location: LC2
 max_mcell \oe_inactive_register[7] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -643,7 +645,7 @@ defparam \oe_inactive_register[7] .power_up = "low";
 defparam \oe_inactive_register[7] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: LC8
+// Location: LC56
 max_mcell \oe_inactive_register[6] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -670,12 +672,12 @@ defparam \oe_inactive_register[6] .power_up = "low";
 defparam \oe_inactive_register[6] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: SEXP57
+// Location: SEXP61
 max_sexp \Mux9~22 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[4],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[2],!oe_counter[3]}),
 	.dataout(\Mux9~22_dataout ));
 
-// Location: LC32
+// Location: LC23
 max_mcell \oe_inactive_register[13] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -702,7 +704,7 @@ defparam \oe_inactive_register[13] .power_up = "low";
 defparam \oe_inactive_register[13] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: LC24
+// Location: LC32
 max_mcell \oe_inactive_register[12] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -729,7 +731,7 @@ defparam \oe_inactive_register[12] .power_up = "low";
 defparam \oe_inactive_register[12] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: LC59
+// Location: LC62
 max_mcell \oe_inactive_register[10] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -756,7 +758,7 @@ defparam \oe_inactive_register[10] .power_up = "low";
 defparam \oe_inactive_register[10] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: LC57
+// Location: LC15
 max_mcell \oe_inactive_register[9] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -783,7 +785,7 @@ defparam \oe_inactive_register[9] .power_up = "low";
 defparam \oe_inactive_register[9] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: LC12
+// Location: LC13
 max_mcell \oe_inactive_register[8] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -810,12 +812,12 @@ defparam \oe_inactive_register[8] .power_up = "low";
 defparam \oe_inactive_register[8] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: SEXP33
+// Location: SEXP51
 max_sexp \Mux7~25 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[4],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3]}),
 	.dataout(\Mux7~25_dataout ));
 
-// Location: LC52
+// Location: LC54
 max_mcell \oe_inactive_register[15] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -842,33 +844,33 @@ defparam \oe_inactive_register[15] .power_up = "low";
 defparam \oe_inactive_register[15] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: SEXP3
+// Location: SEXP5
 max_sexp \Mux0~44 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[9],!oe_counter[8],!oe_counter[10],!oe_counter[11],!oe_counter[0],!oe_counter[1],!oe_counter[4],!oe_counter[5],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],!oe_counter[12],!oe_counter[13],!
 oe_counter[14]}),
 	.dataout(\Mux0~44_dataout ));
 
-// Location: SEXP7
+// Location: SEXP9
 max_sexp \Mux0~60 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!phase_counter[0],!phase_counter[2],!phase_counter[1]}),
 	.dataout(\Mux0~60_dataout ));
 
-// Location: SEXP8
+// Location: SEXP10
 max_sexp \Mux0~61 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,phase_counter[0],phase_counter[1],!phase_counter[2]}),
 	.dataout(\Mux0~61_dataout ));
 
-// Location: SEXP9
+// Location: SEXP13
 max_sexp \Mux0~62 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!phase_counter[0],phase_counter[2]}),
 	.dataout(\Mux0~62_dataout ));
 
-// Location: SEXP12
+// Location: SEXP14
 max_sexp \Mux0~63 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,phase_counter[1],phase_counter[2]}),
 	.dataout(\Mux0~63_dataout ));
 
-// Location: SEXP14
+// Location: SEXP15
 max_sexp \Mux0~64 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,phase_counter[0],!phase_counter[1],!phase_counter[2]}),
 	.dataout(\Mux0~64_dataout ));
@@ -901,47 +903,47 @@ defparam \oe_counter[15] .power_up = "low";
 defparam \oe_counter[15] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: SEXP39
-max_sexp \Equal2~19 (
+// Location: SEXP62
+max_sexp \Equal2~17 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[9],!oe_counter[8],!oe_counter[10],!oe_counter[11],!oe_counter[0],!oe_counter[1],!oe_counter[15],!oe_counter[6],!oe_counter[7],!oe_counter[12],!oe_counter[13],!oe_counter[14],!oe_counter[4],!oe_counter[5],!
 oe_counter[2],!oe_counter[3]}),
-	.dataout(\Equal2~19_dataout ));
+	.dataout(\Equal2~17_dataout ));
 
-// Location: SEXP34
+// Location: SEXP52
 max_sexp \Mux0~39sexp1 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!phase_counter[0],!phase_counter[2],!phase_counter[1]}),
 	.dataout(\Mux0~39sexp1_dataout ));
 
-// Location: SEXP35
+// Location: SEXP53
 max_sexp \Mux0~39sexp2 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,phase_counter[0],phase_counter[1],!phase_counter[2]}),
 	.dataout(\Mux0~39sexp2_dataout ));
 
-// Location: SEXP36
+// Location: SEXP54
 max_sexp \Mux0~43sexp1 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!phase_counter[0],phase_counter[2]}),
 	.dataout(\Mux0~43sexp1_dataout ));
 
-// Location: SEXP37
+// Location: SEXP55
 max_sexp \Mux0~43sexp2 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,phase_counter[1],phase_counter[2]}),
 	.dataout(\Mux0~43sexp2_dataout ));
 
-// Location: SEXP38
+// Location: SEXP56
 max_sexp \Mux0~43sexp3 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,phase_counter[0],!phase_counter[1],!phase_counter[2]}),
 	.dataout(\Mux0~43sexp3_dataout ));
 
-// Location: LC48
+// Location: LC49
 max_mcell \oe_counter[8] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
 	.pexpin(gnd),
 	.fpin(vcc),
-	.pterm0({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~19_dataout ,\Mux7~25_dataout ,oe_counter[8],phase_counter[0],phase_counter[2],!phase_counter[1]}),
+	.pterm0({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~17_dataout ,\Mux7~25_dataout ,oe_counter[8],phase_counter[0],phase_counter[2],!phase_counter[1]}),
 	.pterm1({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[9],!oe_counter[10],!oe_counter[11],!oe_counter[15],!oe_counter[12],!oe_counter[13],!oe_counter[14],!oe_counter[4],!oe_counter[8],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],
 phase_counter[0],phase_counter[2],!phase_counter[1],oe_inactive_register[8]}),
-	.pterm2({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~19_dataout ,!oe_counter[4],!oe_counter[8],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],phase_counter[0],phase_counter[2],!
+	.pterm2({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~17_dataout ,!oe_counter[4],!oe_counter[8],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],phase_counter[0],phase_counter[2],!
 phase_counter[1]}),
 	.pterm3({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
 	.pterm4({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\in_data~dataout [0],!phase_counter[0],!phase_counter[2],phase_counter[1]}),
@@ -961,52 +963,52 @@ defparam \oe_counter[8] .power_up = "low";
 defparam \oe_counter[8] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: SEXP52
+// Location: SEXP33
 max_sexp \Mux6~23 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[4],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],!oe_counter[8]}),
 	.dataout(\Mux6~23_dataout ));
 
-// Location: SEXP53
-max_sexp \Equal2~16sexp (
+// Location: SEXP34
+max_sexp \Equal2~19 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[9],!oe_counter[8],!oe_counter[10],!oe_counter[11],!oe_counter[0],!oe_counter[1],!oe_counter[15],!oe_counter[6],!oe_counter[7],!oe_counter[12],!oe_counter[13],!oe_counter[14],!oe_counter[4],!oe_counter[5],!
 oe_counter[2],!oe_counter[3]}),
-	.dataout(\Equal2~16sexp_dataout ));
+	.dataout(\Equal2~19_dataout ));
 
-// Location: SEXP58
+// Location: SEXP35
 max_sexp \Mux0~50 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!phase_counter[0],!phase_counter[2],!phase_counter[1]}),
 	.dataout(\Mux0~50_dataout ));
 
-// Location: SEXP59
+// Location: SEXP36
 max_sexp \Mux0~51 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,phase_counter[0],phase_counter[1],!phase_counter[2]}),
 	.dataout(\Mux0~51_dataout ));
 
-// Location: SEXP61
+// Location: SEXP37
 max_sexp \Mux0~52 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!phase_counter[0],phase_counter[2]}),
 	.dataout(\Mux0~52_dataout ));
 
-// Location: SEXP62
+// Location: SEXP38
 max_sexp \Mux0~53 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,phase_counter[1],phase_counter[2]}),
 	.dataout(\Mux0~53_dataout ));
 
-// Location: SEXP63
+// Location: SEXP40
 max_sexp \Mux0~54 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,phase_counter[0],!phase_counter[1],!phase_counter[2]}),
 	.dataout(\Mux0~54_dataout ));
 
-// Location: LC49
+// Location: LC39
 max_mcell \oe_counter[9] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
 	.pexpin(gnd),
 	.fpin(vcc),
-	.pterm0({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~16sexp_dataout ,\Mux6~23_dataout ,oe_counter[9],phase_counter[0],phase_counter[2],!phase_counter[1]}),
+	.pterm0({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~19_dataout ,\Mux6~23_dataout ,oe_counter[9],phase_counter[0],phase_counter[2],!phase_counter[1]}),
 	.pterm1({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[10],!oe_counter[11],!oe_counter[15],!oe_counter[12],!oe_counter[13],!oe_counter[14],!oe_counter[4],!oe_counter[9],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],!oe_counter[8],
 phase_counter[0],phase_counter[2],!phase_counter[1],oe_inactive_register[9]}),
-	.pterm2({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~16sexp_dataout ,!oe_counter[4],!oe_counter[9],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],!oe_counter[8],phase_counter[0],
+	.pterm2({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~19_dataout ,!oe_counter[4],!oe_counter[9],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],!oe_counter[8],phase_counter[0],
 phase_counter[2],!phase_counter[1]}),
 	.pterm3({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
 	.pterm4({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\in_data~dataout [1],!phase_counter[0],!phase_counter[2],phase_counter[1]}),
@@ -1031,11 +1033,11 @@ max_sexp \Mux5~22 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[4],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],!oe_counter[8],!oe_counter[9]}),
 	.dataout(\Mux5~22_dataout ));
 
-// Location: SEXP24
-max_sexp \Equal2~17 (
+// Location: SEXP23
+max_sexp \Equal2~18 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[9],!oe_counter[8],!oe_counter[10],!oe_counter[11],!oe_counter[0],!oe_counter[1],!oe_counter[15],!oe_counter[6],!oe_counter[7],!oe_counter[12],!oe_counter[13],!oe_counter[14],!oe_counter[4],!oe_counter[5],!
 oe_counter[2],!oe_counter[3]}),
-	.dataout(\Equal2~17_dataout ));
+	.dataout(\Equal2~18_dataout ));
 
 // Location: SEXP25
 max_sexp \Mux0~55 (
@@ -1068,10 +1070,10 @@ max_mcell \oe_counter[10] (
 	.aclr(!\in_nrst~dataout ),
 	.pexpin(gnd),
 	.fpin(vcc),
-	.pterm0({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~17_dataout ,\Mux5~22_dataout ,oe_counter[10],phase_counter[0],phase_counter[2],!phase_counter[1]}),
+	.pterm0({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~18_dataout ,\Mux5~22_dataout ,oe_counter[10],phase_counter[0],phase_counter[2],!phase_counter[1]}),
 	.pterm1({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[11],!oe_counter[15],!oe_counter[12],!oe_counter[13],!oe_counter[14],!oe_counter[4],!oe_counter[10],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],!oe_counter[8],!oe_counter[9],
 phase_counter[0],phase_counter[2],!phase_counter[1],oe_inactive_register[10]}),
-	.pterm2({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~17_dataout ,!oe_counter[4],!oe_counter[10],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],!oe_counter[8],!oe_counter[9],phase_counter[0],
+	.pterm2({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~18_dataout ,!oe_counter[4],!oe_counter[10],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],!oe_counter[8],!oe_counter[9],phase_counter[0],
 phase_counter[2],!phase_counter[1]}),
 	.pterm3({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
 	.pterm4({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\in_data~dataout [2],!phase_counter[0],!phase_counter[2],phase_counter[1]}),
@@ -1096,16 +1098,16 @@ max_sexp \Mux3~20 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[4],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],!oe_counter[9],!oe_counter[8],!oe_counter[10],!oe_counter[11]}),
 	.dataout(\Mux3~20_dataout ));
 
-// Location: LC22
+// Location: LC29
 max_mcell \oe_counter[12] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
 	.pexpin(gnd),
 	.fpin(vcc),
-	.pterm0({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~17_dataout ,\Mux3~20_dataout ,oe_counter[12],phase_counter[0],phase_counter[2],!phase_counter[1]}),
+	.pterm0({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~18_dataout ,\Mux3~20_dataout ,oe_counter[12],phase_counter[0],phase_counter[2],!phase_counter[1]}),
 	.pterm1({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[15],!oe_counter[13],!oe_counter[14],!oe_counter[4],!oe_counter[12],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],!oe_counter[9],!oe_counter[8],!oe_counter[10],!oe_counter[11],
 phase_counter[0],phase_counter[2],!phase_counter[1],oe_inactive_register[12]}),
-	.pterm2({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~17_dataout ,!oe_counter[4],!oe_counter[12],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],!oe_counter[9],!oe_counter[8],!oe_counter[10],!oe_counter[11],
+	.pterm2({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~18_dataout ,!oe_counter[4],!oe_counter[12],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],!oe_counter[9],!oe_counter[8],!oe_counter[10],!oe_counter[11],
 phase_counter[0],phase_counter[2],!phase_counter[1]}),
 	.pterm3({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
 	.pterm4({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\in_data~dataout [4],!phase_counter[0],!phase_counter[2],phase_counter[1]}),
@@ -1125,27 +1127,27 @@ defparam \oe_counter[12] .power_up = "low";
 defparam \oe_counter[12] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: SEXP1
+// Location: SEXP3
 max_sexp \Mux2~19 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[4],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],!oe_counter[9],!oe_counter[8],!oe_counter[10],!oe_counter[11],!oe_counter[12]}),
 	.dataout(\Mux2~19_dataout ));
 
-// Location: SEXP6
-max_sexp \Equal2~18 (
+// Location: SEXP2
+max_sexp \Equal2~16sexp (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[9],!oe_counter[8],!oe_counter[10],!oe_counter[11],!oe_counter[0],!oe_counter[1],!oe_counter[15],!oe_counter[6],!oe_counter[7],!oe_counter[12],!oe_counter[13],!oe_counter[14],!oe_counter[4],!oe_counter[5],!
 oe_counter[2],!oe_counter[3]}),
-	.dataout(\Equal2~18_dataout ));
+	.dataout(\Equal2~16sexp_dataout ));
 
-// Location: LC11
+// Location: LC7
 max_mcell \oe_counter[13] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
 	.pexpin(gnd),
 	.fpin(vcc),
-	.pterm0({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~18_dataout ,\Mux2~19_dataout ,oe_counter[13],phase_counter[0],phase_counter[2],!phase_counter[1]}),
+	.pterm0({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~16sexp_dataout ,\Mux2~19_dataout ,oe_counter[13],phase_counter[0],phase_counter[2],!phase_counter[1]}),
 	.pterm1({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[15],!oe_counter[14],!oe_counter[4],!oe_counter[13],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],!oe_counter[9],!oe_counter[8],!oe_counter[10],!oe_counter[11],!oe_counter[12],
 phase_counter[0],phase_counter[2],!phase_counter[1],oe_inactive_register[13]}),
-	.pterm2({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~18_dataout ,!oe_counter[4],!oe_counter[13],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],!oe_counter[9],!oe_counter[8],!oe_counter[10],!oe_counter[11],!
+	.pterm2({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~16sexp_dataout ,!oe_counter[4],!oe_counter[13],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],!oe_counter[9],!oe_counter[8],!oe_counter[10],!oe_counter[11],!
 oe_counter[12],phase_counter[0],phase_counter[2],!phase_counter[1]}),
 	.pterm3({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
 	.pterm4({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\in_data~dataout [5],!phase_counter[0],!phase_counter[2],phase_counter[1]}),
@@ -1165,18 +1167,18 @@ defparam \oe_counter[13] .power_up = "low";
 defparam \oe_counter[13] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: LC54
+// Location: LC63
 max_mcell \oe_counter[6] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
 	.pexpin(gnd),
 	.fpin(vcc),
-	.pterm0({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~16sexp_dataout ,\Mux9~22_dataout ,oe_counter[6],phase_counter[2],phase_counter[0],!phase_counter[1]}),
+	.pterm0({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~17_dataout ,\Mux9~22_dataout ,oe_counter[6],phase_counter[2],phase_counter[0],!phase_counter[1]}),
 	.pterm1({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!phase_counter[2],phase_counter[0],!phase_counter[1],\in_data~dataout [6]}),
 	.pterm2({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[9],!oe_counter[8],!oe_counter[10],!oe_counter[11],!oe_counter[15],!oe_counter[7],!oe_counter[12],!oe_counter[13],!oe_counter[14],!oe_counter[4],!oe_counter[6],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[2],!oe_counter[3],
 oe_inactive_register[6],phase_counter[2],phase_counter[0],!phase_counter[1]}),
 	.pterm3({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
-	.pterm4({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~16sexp_dataout ,!oe_counter[4],!oe_counter[6],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[2],!oe_counter[3],phase_counter[2],phase_counter[0],!phase_counter[1]}),
+	.pterm4({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~17_dataout ,!oe_counter[4],!oe_counter[6],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[2],!oe_counter[3],phase_counter[2],phase_counter[0],!phase_counter[1]}),
 	.pterm5({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
 	.pxor({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
 	.pclk({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
@@ -1193,12 +1195,12 @@ defparam \oe_counter[6] .power_up = "low";
 defparam \oe_counter[6] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: SEXP51
+// Location: SEXP1
 max_sexp \Mux8~38 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[4],!oe_counter[5],!oe_counter[6],!oe_counter[0],!oe_counter[1],!oe_counter[2],!oe_counter[3]}),
 	.dataout(\Mux8~38_dataout ));
 
-// Location: LC60
+// Location: LC11
 max_mcell \oe_counter[7] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -1232,16 +1234,16 @@ max_sexp \Mux4~21 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[9],!oe_counter[8],!oe_counter[10],!oe_counter[4],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3]}),
 	.dataout(\Mux4~21_dataout ));
 
-// Location: LC28
+// Location: LC24
 max_mcell \oe_counter[11] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
 	.pexpin(gnd),
 	.fpin(vcc),
-	.pterm0({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~17_dataout ,\Mux4~21_dataout ,oe_counter[11],phase_counter[0],phase_counter[2],!phase_counter[1]}),
+	.pterm0({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~18_dataout ,\Mux4~21_dataout ,oe_counter[11],phase_counter[0],phase_counter[2],!phase_counter[1]}),
 	.pterm1({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[15],!oe_counter[12],!oe_counter[13],!oe_counter[14],!oe_counter[9],!oe_counter[11],!oe_counter[8],!oe_counter[10],!oe_counter[4],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],
 phase_counter[0],phase_counter[2],!phase_counter[1],oe_inactive_register[11]}),
-	.pterm2({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~17_dataout ,!oe_counter[9],!oe_counter[11],!oe_counter[8],!oe_counter[10],!oe_counter[4],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],
+	.pterm2({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~18_dataout ,!oe_counter[9],!oe_counter[11],!oe_counter[8],!oe_counter[10],!oe_counter[4],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],
 phase_counter[0],phase_counter[2],!phase_counter[1]}),
 	.pterm3({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
 	.pterm4({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\in_data~dataout [3],!phase_counter[0],!phase_counter[2],phase_counter[1]}),
@@ -1261,28 +1263,28 @@ defparam \oe_counter[11] .power_up = "low";
 defparam \oe_counter[11] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: SEXP2
+// Location: SEXP57
 max_sexp \Mux1~18 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[12],!oe_counter[13],!oe_counter[4],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],!oe_counter[9],!oe_counter[8],!oe_counter[10],!oe_counter[11]}),
 	.dataout(\Mux1~18_dataout ));
 
-// Location: LC13
+// Location: LC58
 max_mcell \oe_counter[14] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
 	.pexpin(gnd),
 	.fpin(vcc),
-	.pterm0({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~18_dataout ,\Mux1~18_dataout ,oe_counter[14],phase_counter[0],phase_counter[2],!phase_counter[1]}),
+	.pterm0({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~17_dataout ,\Mux1~18_dataout ,oe_counter[14],phase_counter[0],phase_counter[2],!phase_counter[1]}),
 	.pterm1({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[15],!oe_counter[12],!oe_counter[14],!oe_counter[13],!oe_counter[4],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],!oe_counter[9],!oe_counter[8],!oe_counter[10],!oe_counter[11],
 phase_counter[0],phase_counter[2],!phase_counter[1],oe_inactive_register[14]}),
-	.pterm2({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~18_dataout ,!oe_counter[12],!oe_counter[14],!oe_counter[13],!oe_counter[4],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],!oe_counter[9],!oe_counter[8],!
+	.pterm2({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~17_dataout ,!oe_counter[12],!oe_counter[14],!oe_counter[13],!oe_counter[4],!oe_counter[5],!oe_counter[0],!oe_counter[1],!oe_counter[6],!oe_counter[7],!oe_counter[2],!oe_counter[3],!oe_counter[9],!oe_counter[8],!
 oe_counter[10],!oe_counter[11],phase_counter[0],phase_counter[2],!phase_counter[1]}),
 	.pterm3({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
 	.pterm4({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\in_data~dataout [6],!phase_counter[0],!phase_counter[2],phase_counter[1]}),
 	.pterm5({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
 	.pxor({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
 	.pclk({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
-	.pena({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Mux0~64_dataout ,\Mux0~63_dataout ,\Mux0~62_dataout ,\Mux0~61_dataout ,\Mux0~60_dataout }),
+	.pena({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Mux0~43sexp3_dataout ,\Mux0~43sexp2_dataout ,\Mux0~43sexp1_dataout ,\Mux0~39sexp2_dataout ,\Mux0~39sexp1_dataout }),
 	.paclr({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
 	.papre({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
 	.dataout(oe_counter[14]),
@@ -1301,12 +1303,12 @@ max_mcell \oe_counter[4] (
 	.aclr(!\in_nrst~dataout ),
 	.pexpin(gnd),
 	.fpin(vcc),
-	.pterm0({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~17_dataout ,\Mux11~19_dataout ,oe_counter[4],phase_counter[2],phase_counter[0],!phase_counter[1]}),
+	.pterm0({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~18_dataout ,\Mux11~19_dataout ,oe_counter[4],phase_counter[2],phase_counter[0],!phase_counter[1]}),
 	.pterm1({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!phase_counter[2],phase_counter[0],!phase_counter[1],\in_data~dataout [4]}),
 	.pterm2({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[9],!oe_counter[8],!oe_counter[10],!oe_counter[11],!oe_counter[15],!oe_counter[6],!oe_counter[7],!oe_counter[12],!oe_counter[13],!oe_counter[14],!oe_counter[5],!oe_counter[0],!oe_counter[4],!oe_counter[1],!oe_counter[2],!oe_counter[3],
 oe_inactive_register[4],phase_counter[2],phase_counter[0],!phase_counter[1]}),
 	.pterm3({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
-	.pterm4({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~17_dataout ,!oe_counter[0],!oe_counter[4],!oe_counter[1],!oe_counter[2],!oe_counter[3],phase_counter[2],phase_counter[0],!phase_counter[1]}),
+	.pterm4({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~18_dataout ,!oe_counter[0],!oe_counter[4],!oe_counter[1],!oe_counter[2],!oe_counter[3],phase_counter[2],phase_counter[0],!phase_counter[1]}),
 	.pterm5({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
 	.pxor({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
 	.pclk({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
@@ -1323,7 +1325,7 @@ defparam \oe_counter[4] .power_up = "low";
 defparam \oe_counter[4] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: SEXP5
+// Location: SEXP6
 max_sexp \Mux10~19 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[0],!oe_counter[1],!oe_counter[2],!oe_counter[3],!oe_counter[4]}),
 	.dataout(\Mux10~19_dataout ));
@@ -1334,12 +1336,12 @@ max_mcell \oe_counter[5] (
 	.aclr(!\in_nrst~dataout ),
 	.pexpin(gnd),
 	.fpin(vcc),
-	.pterm0({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~18_dataout ,\Mux10~19_dataout ,oe_counter[5],phase_counter[2],phase_counter[0],!phase_counter[1]}),
+	.pterm0({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~16sexp_dataout ,\Mux10~19_dataout ,oe_counter[5],phase_counter[2],phase_counter[0],!phase_counter[1]}),
 	.pterm1({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!phase_counter[2],phase_counter[0],!phase_counter[1],\in_data~dataout [5]}),
 	.pterm2({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[9],!oe_counter[8],!oe_counter[10],!oe_counter[11],!oe_counter[15],!oe_counter[6],!oe_counter[7],!oe_counter[12],!oe_counter[13],!oe_counter[14],!oe_counter[0],!oe_counter[5],!oe_counter[1],!oe_counter[2],!oe_counter[3],!oe_counter[4],
 oe_inactive_register[5],phase_counter[2],phase_counter[0],!phase_counter[1]}),
 	.pterm3({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
-	.pterm4({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~18_dataout ,!oe_counter[0],!oe_counter[5],!oe_counter[1],!oe_counter[2],!oe_counter[3],!oe_counter[4],phase_counter[2],phase_counter[0],!phase_counter[1]}),
+	.pterm4({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~16sexp_dataout ,!oe_counter[0],!oe_counter[5],!oe_counter[1],!oe_counter[2],!oe_counter[3],!oe_counter[4],phase_counter[2],phase_counter[0],!phase_counter[1]}),
 	.pterm5({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
 	.pxor({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
 	.pclk({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
@@ -1356,7 +1358,7 @@ defparam \oe_counter[5] .power_up = "low";
 defparam \oe_counter[5] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: LC47
+// Location: LC8
 max_mcell \oe_counter[0] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -1384,7 +1386,7 @@ defparam \oe_counter[0] .power_up = "low";
 defparam \oe_counter[0] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: LC56
+// Location: LC12
 max_mcell \oe_counter[1] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -1412,7 +1414,7 @@ defparam \oe_counter[1] .power_up = "low";
 defparam \oe_counter[1] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: SEXP55
+// Location: SEXP59
 max_sexp \Mux13~17 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[0],!oe_counter[1]}),
 	.dataout(\Mux13~17_dataout ));
@@ -1423,12 +1425,12 @@ max_mcell \oe_counter[2] (
 	.aclr(!\in_nrst~dataout ),
 	.pexpin(gnd),
 	.fpin(vcc),
-	.pterm0({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~16sexp_dataout ,\Mux13~17_dataout ,oe_counter[2],phase_counter[2],phase_counter[0],!phase_counter[1]}),
+	.pterm0({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~17_dataout ,\Mux13~17_dataout ,oe_counter[2],phase_counter[2],phase_counter[0],!phase_counter[1]}),
 	.pterm1({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!phase_counter[2],phase_counter[0],!phase_counter[1],\in_data~dataout [2]}),
 	.pterm2({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[9],!oe_counter[8],!oe_counter[10],!oe_counter[11],!oe_counter[15],!oe_counter[6],!oe_counter[7],!oe_counter[12],!oe_counter[13],!oe_counter[14],!oe_counter[4],!oe_counter[5],!oe_counter[3],!oe_counter[0],!oe_counter[2],!oe_counter[1],
 oe_inactive_register[2],phase_counter[2],phase_counter[0],!phase_counter[1]}),
 	.pterm3({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
-	.pterm4({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~16sexp_dataout ,!oe_counter[0],!oe_counter[2],!oe_counter[1],phase_counter[2],phase_counter[0],!phase_counter[1]}),
+	.pterm4({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~17_dataout ,!oe_counter[0],!oe_counter[2],!oe_counter[1],phase_counter[2],phase_counter[0],!phase_counter[1]}),
 	.pterm5({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
 	.pxor({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
 	.pclk({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
@@ -1450,18 +1452,18 @@ max_sexp \Mux12~18 (
 	.datain({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[0],!oe_counter[1],!oe_counter[2]}),
 	.dataout(\Mux12~18_dataout ));
 
-// Location: LC29
+// Location: LC28
 max_mcell \oe_counter[3] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
 	.pexpin(gnd),
 	.fpin(vcc),
-	.pterm0({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~17_dataout ,\Mux12~18_dataout ,oe_counter[3],phase_counter[2],phase_counter[0],!phase_counter[1]}),
+	.pterm0({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~18_dataout ,\Mux12~18_dataout ,oe_counter[3],phase_counter[2],phase_counter[0],!phase_counter[1]}),
 	.pterm1({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!phase_counter[2],phase_counter[0],!phase_counter[1],\in_data~dataout [3]}),
 	.pterm2({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,!oe_counter[9],!oe_counter[8],!oe_counter[10],!oe_counter[11],!oe_counter[15],!oe_counter[6],!oe_counter[7],!oe_counter[12],!oe_counter[13],!oe_counter[14],!oe_counter[4],!oe_counter[5],!oe_counter[0],!oe_counter[3],!oe_counter[1],!oe_counter[2],
 oe_inactive_register[3],phase_counter[2],phase_counter[0],!phase_counter[1]}),
 	.pterm3({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
-	.pterm4({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~17_dataout ,!oe_counter[0],!oe_counter[3],!oe_counter[1],!oe_counter[2],phase_counter[2],phase_counter[0],!phase_counter[1]}),
+	.pterm4({vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,vcc,\Equal2~18_dataout ,!oe_counter[0],!oe_counter[3],!oe_counter[1],!oe_counter[2],phase_counter[2],phase_counter[0],!phase_counter[1]}),
 	.pterm5({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
 	.pxor({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
 	.pclk({gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd,gnd}),
@@ -1478,7 +1480,7 @@ defparam \oe_counter[3] .power_up = "low";
 defparam \oe_counter[3] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: LC43
+// Location: LC48
 max_mcell led_oe(
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -1508,7 +1510,7 @@ defparam led_oe.power_up = "low";
 defparam led_oe.register_mode = "tff";
 // synopsys translate_on
 
-// Location: LC34
+// Location: LC38
 max_mcell oe_phase_is_finished(
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -1536,7 +1538,7 @@ defparam oe_phase_is_finished.power_up = "low";
 defparam oe_phase_is_finished.register_mode = "dff";
 // synopsys translate_on
 
-// Location: LC38
+// Location: LC47
 max_mcell \phase_counter[2] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -1563,7 +1565,7 @@ defparam \phase_counter[2] .power_up = "low";
 defparam \phase_counter[2] .register_mode = "tff";
 // synopsys translate_on
 
-// Location: LC15
+// Location: LC34
 max_mcell \phase_counter[1] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -1887,7 +1889,7 @@ defparam \rgb_data[5] .power_up = "low";
 defparam \rgb_data[5] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: LC53
+// Location: LC64
 max_mcell led_lat(
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -1914,7 +1916,7 @@ defparam led_lat.power_up = "low";
 defparam led_lat.register_mode = "dff";
 // synopsys translate_on
 
-// Location: LC64
+// Location: LC59
 max_mcell \out_phases[1] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -1991,7 +1993,7 @@ defparam \al422_re_out~6 .output_mode = "comb";
 defparam \al422_re_out~6 .pexp_mode = "off";
 // synopsys translate_on
 
-// Location: LC23
+// Location: LC3
 max_mcell \out_phases[0] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -2043,7 +2045,7 @@ defparam \led_oe_out~5 .output_mode = "comb";
 defparam \led_oe_out~5 .pexp_mode = "off";
 // synopsys translate_on
 
-// Location: LC16
+// Location: LC53
 max_mcell al422_nrst(
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -2097,7 +2099,7 @@ defparam \al422_nrst_out~4 .output_mode = "comb";
 defparam \al422_nrst_out~4 .pexp_mode = "off";
 // synopsys translate_on
 
-// Location: LC63
+// Location: LC9
 max_mcell \out_phases[2] (
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),
@@ -2124,7 +2126,7 @@ defparam \out_phases[2] .power_up = "low";
 defparam \out_phases[2] .register_mode = "dff";
 // synopsys translate_on
 
-// Location: LC2
+// Location: LC61
 max_mcell led_clk(
 	.clk(\in_clk~dataout ),
 	.aclr(!\in_nrst~dataout ),

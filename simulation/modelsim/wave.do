@@ -20,6 +20,7 @@ add wave -noupdate -radix hexadecimal /al422_bam_bs_vlg_tst/led_row
 add wave -noupdate -radix hexadecimal /al422_bam_bs_vlg_tst/al422_bam_bs/rgb_data
 add wave -noupdate /al422_bam_bs_vlg_tst/al422_bam_bs/eol_fixed
 add wave -noupdate /al422_bam_bs_vlg_tst/al422_bam_bs/load_phase_is_finished
+add wave -noupdate /al422_bam_bs_vlg_tst/al422_bam_bs/next_row_start
 add wave -noupdate /al422_bam_bs_vlg_tst/j
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors {{Cursor 1} {0 ps} 0}

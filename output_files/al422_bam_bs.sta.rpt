@@ -1,5 +1,5 @@
 TimeQuest Timing Analyzer report for al422_bam_bs
-Sun Jan 28 14:26:44 2018
+Tue Jan 30 17:55:21 2018
 Quartus II 64-Bit Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
 
 
@@ -84,7 +84,7 @@ Parallel compilation was disabled, but you have multiple processors available. E
 +------------------+--------+--------------------------+
 ; SDC File Path    ; Status ; Read at                  ;
 +------------------+--------+--------------------------+
-; al422_bam_bs.sdc ; OK     ; Sun Jan 28 14:26:44 2018 ;
+; al422_bam_bs.sdc ; OK     ; Tue Jan 30 17:55:20 2018 ;
 +------------------+--------+--------------------------+
 
 
@@ -268,12 +268,12 @@ No paths to report.
 ; 4.100 ; phase_counter[2] ; oe_inactive_register[0]  ; in_clk       ; in_clk      ; 0.000        ; 0.000      ; 5.400      ;
 ; 4.100 ; phase_counter[1] ; oe_inactive_register[0]  ; in_clk       ; in_clk      ; 0.000        ; 0.000      ; 5.400      ;
 ; 4.100 ; phase_counter[0] ; oe_inactive_register[0]  ; in_clk       ; in_clk      ; 0.000        ; 0.000      ; 5.400      ;
-; 4.100 ; phase_counter[2] ; oe_inactive_register[15] ; in_clk       ; in_clk      ; 0.000        ; 0.000      ; 5.400      ;
-; 4.100 ; phase_counter[0] ; oe_inactive_register[15] ; in_clk       ; in_clk      ; 0.000        ; 0.000      ; 5.400      ;
-; 4.100 ; phase_counter[1] ; oe_inactive_register[15] ; in_clk       ; in_clk      ; 0.000        ; 0.000      ; 5.400      ;
 ; 4.100 ; phase_counter[2] ; oe_inactive_register[8]  ; in_clk       ; in_clk      ; 0.000        ; 0.000      ; 5.400      ;
 ; 4.100 ; phase_counter[0] ; oe_inactive_register[8]  ; in_clk       ; in_clk      ; 0.000        ; 0.000      ; 5.400      ;
 ; 4.100 ; phase_counter[1] ; oe_inactive_register[8]  ; in_clk       ; in_clk      ; 0.000        ; 0.000      ; 5.400      ;
+; 4.100 ; phase_counter[2] ; oe_inactive_register[15] ; in_clk       ; in_clk      ; 0.000        ; 0.000      ; 5.400      ;
+; 4.100 ; phase_counter[0] ; oe_inactive_register[15] ; in_clk       ; in_clk      ; 0.000        ; 0.000      ; 5.400      ;
+; 4.100 ; phase_counter[1] ; oe_inactive_register[15] ; in_clk       ; in_clk      ; 0.000        ; 0.000      ; 5.400      ;
 ; 4.100 ; phase_counter[2] ; oe_inactive_register[9]  ; in_clk       ; in_clk      ; 0.000        ; 0.000      ; 5.400      ;
 ; 4.100 ; phase_counter[0] ; oe_inactive_register[9]  ; in_clk       ; in_clk      ; 0.000        ; 0.000      ; 5.400      ;
 ; 4.100 ; phase_counter[1] ; oe_inactive_register[9]  ; in_clk       ; in_clk      ; 0.000        ; 0.000      ; 5.400      ;
@@ -476,13 +476,13 @@ No paths to report.
 ; Data Port   ; Clock Port ; Rise  ; Fall  ; Clock Edge ; Clock Reference ;
 +-------------+------------+-------+-------+------------+-----------------+
 ; in_data[*]  ; in_clk     ; 6.400 ; 6.400 ; Rise       ; in_clk          ;
-;  in_data[0] ; in_clk     ; 6.300 ; 6.300 ; Rise       ; in_clk          ;
+;  in_data[0] ; in_clk     ; 6.400 ; 6.400 ; Rise       ; in_clk          ;
 ;  in_data[1] ; in_clk     ; 6.400 ; 6.400 ; Rise       ; in_clk          ;
 ;  in_data[2] ; in_clk     ; 6.400 ; 6.400 ; Rise       ; in_clk          ;
 ;  in_data[3] ; in_clk     ; 6.300 ; 6.300 ; Rise       ; in_clk          ;
 ;  in_data[4] ; in_clk     ; 6.200 ; 6.200 ; Rise       ; in_clk          ;
 ;  in_data[5] ; in_clk     ; 6.300 ; 6.300 ; Rise       ; in_clk          ;
-;  in_data[6] ; in_clk     ; 6.300 ; 6.300 ; Rise       ; in_clk          ;
+;  in_data[6] ; in_clk     ; 6.200 ; 6.200 ; Rise       ; in_clk          ;
 ;  in_data[7] ; in_clk     ; 6.300 ; 6.300 ; Rise       ; in_clk          ;
 +-------------+------------+-------+-------+------------+-----------------+
 
@@ -493,13 +493,13 @@ No paths to report.
 ; Data Port   ; Clock Port ; Rise   ; Fall   ; Clock Edge ; Clock Reference ;
 +-------------+------------+--------+--------+------------+-----------------+
 ; in_data[*]  ; in_clk     ; -2.000 ; -2.000 ; Rise       ; in_clk          ;
-;  in_data[0] ; in_clk     ; -2.100 ; -2.100 ; Rise       ; in_clk          ;
+;  in_data[0] ; in_clk     ; -2.200 ; -2.200 ; Rise       ; in_clk          ;
 ;  in_data[1] ; in_clk     ; -2.200 ; -2.200 ; Rise       ; in_clk          ;
 ;  in_data[2] ; in_clk     ; -2.200 ; -2.200 ; Rise       ; in_clk          ;
 ;  in_data[3] ; in_clk     ; -2.100 ; -2.100 ; Rise       ; in_clk          ;
 ;  in_data[4] ; in_clk     ; -2.000 ; -2.000 ; Rise       ; in_clk          ;
 ;  in_data[5] ; in_clk     ; -2.100 ; -2.100 ; Rise       ; in_clk          ;
-;  in_data[6] ; in_clk     ; -2.100 ; -2.100 ; Rise       ; in_clk          ;
+;  in_data[6] ; in_clk     ; -2.000 ; -2.000 ; Rise       ; in_clk          ;
 ;  in_data[7] ; in_clk     ; -2.100 ; -2.100 ; Rise       ; in_clk          ;
 +-------------+------------+--------+--------+------------+-----------------+
 
@@ -509,7 +509,7 @@ No paths to report.
 +----------------+------------+--------+--------+------------+-----------------+
 ; Data Port      ; Clock Port ; Rise   ; Fall   ; Clock Edge ; Clock Reference ;
 +----------------+------------+--------+--------+------------+-----------------+
-; al422_nrst_out ; in_clk     ; 13.800 ; 13.800 ; Rise       ; in_clk          ;
+; al422_nrst_out ; in_clk     ; 13.900 ; 13.900 ; Rise       ; in_clk          ;
 ; al422_re_out   ; in_clk     ; 14.000 ; 14.000 ; Rise       ; in_clk          ;
 ; led_clk_out    ; in_clk     ; 13.800 ; 13.800 ; Rise       ; in_clk          ;
 ; led_lat_out    ; in_clk     ; 13.800 ; 13.800 ; Rise       ; in_clk          ;
@@ -536,8 +536,8 @@ No paths to report.
 +----------------+------------+--------+--------+------------+-----------------+
 ; Data Port      ; Clock Port ; Rise   ; Fall   ; Clock Edge ; Clock Reference ;
 +----------------+------------+--------+--------+------------+-----------------+
-; al422_nrst_out ; in_clk     ; 13.800 ; 13.800 ; Rise       ; in_clk          ;
-; al422_re_out   ; in_clk     ; 13.900 ; 13.900 ; Rise       ; in_clk          ;
+; al422_nrst_out ; in_clk     ; 13.900 ; 13.900 ; Rise       ; in_clk          ;
+; al422_re_out   ; in_clk     ; 13.800 ; 13.800 ; Rise       ; in_clk          ;
 ; led_clk_out    ; in_clk     ; 13.800 ; 13.800 ; Rise       ; in_clk          ;
 ; led_lat_out    ; in_clk     ; 13.800 ; 13.800 ; Rise       ; in_clk          ;
 ; led_oe_out     ; in_clk     ; 13.800 ; 13.800 ; Rise       ; in_clk          ;
@@ -581,7 +581,7 @@ No paths to report.
 +------------+----------+----------+----------+----------+----------+
 ; From Clock ; To Clock ; RR Paths ; FR Paths ; RF Paths ; FF Paths ;
 +------------+----------+----------+----------+----------+----------+
-; in_clk     ; in_clk   ; 1601     ; 0        ; 0        ; 0        ;
+; in_clk     ; in_clk   ; 1615     ; 0        ; 0        ; 0        ;
 +------------+----------+----------+----------+----------+----------+
 Entries labeled "false path" only account for clock-to-clock false paths and not path-based false paths. As a result, actual path counts may be lower than reported.
 
@@ -591,7 +591,7 @@ Entries labeled "false path" only account for clock-to-clock false paths and not
 +------------+----------+----------+----------+----------+----------+
 ; From Clock ; To Clock ; RR Paths ; FR Paths ; RF Paths ; FF Paths ;
 +------------+----------+----------+----------+----------+----------+
-; in_clk     ; in_clk   ; 1601     ; 0        ; 0        ; 0        ;
+; in_clk     ; in_clk   ; 1615     ; 0        ; 0        ; 0        ;
 +------------+----------+----------+----------+----------+----------+
 Entries labeled "false path" only account for clock-to-clock false paths and not path-based false paths. As a result, actual path counts may be lower than reported.
 
@@ -628,7 +628,7 @@ No dedicated SERDES Receiver circuitry present in device or used in design
 Info: *******************************************************************
 Info: Running Quartus II 64-Bit TimeQuest Timing Analyzer
     Info: Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
-    Info: Processing started: Sun Jan 28 14:26:44 2018
+    Info: Processing started: Tue Jan 30 17:55:19 2018
 Info: Command: quartus_sta al422_bam_bs -c al422_bam_bs
 Info: qsta_default_script.tcl version: #1
 Info (306004): Started post-fitting delay annotation
@@ -652,17 +652,17 @@ Info (332146): Worst-case minimum pulse width slack is 6.000
 Info (332001): The selected device family is not supported by the report_metastability command.
 Info (332102): Design is not fully constrained for setup requirements
 Info (332102): Design is not fully constrained for hold requirements
-Info (144001): Generated suppressed messages file P:/altera/al422-bam-bs/output_files/al422_bam_bs.sta.smsg
+Info (144001): Generated suppressed messages file D:/altera/al422-bam-bs/output_files/al422_bam_bs.sta.smsg
 Info: Quartus II 64-Bit TimeQuest Timing Analyzer was successful. 0 errors, 0 warnings
-    Info: Peak virtual memory: 357 megabytes
-    Info: Processing ended: Sun Jan 28 14:26:44 2018
-    Info: Elapsed time: 00:00:00
-    Info: Total CPU time (on all processors): 00:00:00
+    Info: Peak virtual memory: 355 megabytes
+    Info: Processing ended: Tue Jan 30 17:55:21 2018
+    Info: Elapsed time: 00:00:02
+    Info: Total CPU time (on all processors): 00:00:01
 
 
 +-----------------------------------------------+
 ; TimeQuest Timing Analyzer Suppressed Messages ;
 +-----------------------------------------------+
-The suppressed messages can be found in P:/altera/al422-bam-bs/output_files/al422_bam_bs.sta.smsg.
+The suppressed messages can be found in D:/altera/al422-bam-bs/output_files/al422_bam_bs.sta.smsg.
 
 
