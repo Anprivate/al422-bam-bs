@@ -437,6 +437,14 @@ uint16_t LED_PANEL::GetPrescaler(void) {
   return cur_oe_prescaler;
 }
 
+void LED_PANEL::SetOutputPhases(boolean clk_inverted, boolean lat_inverted, boolean oe_inverted) {
+  uint8_t tmp_byte = 0x00;
+  if (clk_inverted) tmp_byte |= (1 << 7);
+  if (lat_inverted) tmp_byte |= (1 << 6);
+  if (oe_inverted) tmp_byte |= (1 << 5);
+  out_signals_phases = tmp_byte;
+}
+
 void LED_PANEL::static_begin(uint8_t we_pin) {
   if (!begun) {
     timer_clk_dev = PIN_MAP[clk_out].timer_device;
